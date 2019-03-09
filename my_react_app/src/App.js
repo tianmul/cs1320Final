@@ -10,7 +10,7 @@ class App extends Component {
 			<div className="App">
 				<BrowserRouter>
 					<Switch>
-						<Route path='/search' component={Search}/>
+						<Route exact path='/' component={Search}/>
 						<Route path='/result' component={Result}/>
 					</Switch>
 				</BrowserRouter>
