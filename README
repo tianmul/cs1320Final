@@ -1,0 +1,5 @@
+1. npm install react-router-dom
+2. npm install express body-parser --save-dev
+3. npm install node-env-run nodemon npm-run-all express-pino-logger pino-colada --save-dev
+4. npm install axios
+5. npm run dev
