@@ -1,0 +1,15 @@
+.Filter{ 
+	width:200px;
+	height:300px;
+	float:left;
+	border:1px;
+	overflow-y:scroll;
+} 
+.FilterWarpper{ 
+	width:200px;
+	float:left;
+	border:1px;
+} 
+.CheckBoxSample{ 
+	text-align:left;
+} 

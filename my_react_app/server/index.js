@@ -1,12 +1,3 @@
-/*const express = require('express');
-const app = express();
-
-app.get('/', (req, res) => {
-	axios.get('https://library.brown.edu/iip_development/mapsearch/').then((response) => {
-  		response.setHeader('Content-Type', 'application/json');
-  		response.send(JSON.stringify({ greeting: `Hello!` }));
-  	});
-});*/
 const axios = require('axios')
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -18,6 +9,12 @@ app.use(pino);
 
 app.get('/search1', (req, res) => {
 	axios.get('https://library.brown.edu/iip_development/mapsearch/').then((response) => {		
+  		res.setHeader('Content-Type', 'text/plain');
+  		res.send( response.data.toString());
+  	});
+});
+app.get('/search2', (req, res) => {
+	axios.get('https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche').then((response) => {		
   		res.setHeader('Content-Type', 'text/plain');
   		res.send( response.data.toString());
   	});
