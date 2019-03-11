@@ -1,0 +1,24 @@
+.row{
+    display: flex;
+    margin: 50px;
+}
+.field_des{
+    width:20%;
+    float: left;
+    position:relative;
+    text-align: left;
+}
+
+.field_con{
+    width:50%;
+    text-align: left;    
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

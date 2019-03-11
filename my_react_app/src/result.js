@@ -76,6 +76,7 @@ class Result extends Component {
   	fetch('https://edh-www.adw.uni-heidelberg.de/data/api/inscriptions/search?province=ges&province=gei&transcription=votum%20solvit&year_not_before=200')
   	.then(res => res.json())
   	.then(data => {
+       
   		console.log(data.items[0].fotos[0]);
   		let wholeItems = [];
   		for (var i = 0; i < data.items.length; i++) {
