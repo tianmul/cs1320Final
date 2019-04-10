@@ -7,18 +7,25 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(pino);
 
+let project1 = "";
+let project2 = "";
+axios.get('https://library.brown.edu/iip_development/mapsearch/').then((response) => {
+	project1 = response.data.toString();
+	console.log("Project 1 cached!");
+});
+
+axios.get('https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche').then((response) => {		
+	project2 = response.data.toString();
+	console.log("Project 2 cached!");
+});
+
 app.get('/search1', (req, res) => {
-    axios.get('https://library.brown.edu/iip_development/mapsearch/').then((response) => {
-        cosole.log("ss");
-        res.setHeader('Content-Type', 'text/plain');
-        res.send( response.data.toString());
-    });
+	res.setHeader('Content-Type', 'text/plain');
+	res.send( project1 );
 });
 app.get('/search2', (req, res) => {
-    axios.get('https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche').then((response) => {		
-        res.setHeader('Content-Type', 'text/plain');
-        res.send( response.data.toString());
-    });
+	res.setHeader('Content-Type', 'text/plain');
+	res.send( project2 );
 });
 
 //app.get('/details', (req, res) => {
