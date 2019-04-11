@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import './search.css'
 
+/*basic functions*/
 const capitalize = (s) => {
 	if (typeof s !== 'string') return ''
 	return s.charAt(0).toUpperCase() + s.slice(1)
@@ -12,6 +13,8 @@ const lowitalize = (s) => {
 	return s.charAt(0).toLowerCase() + s.slice(1)
 }
 
+
+/*select -> Name Mapping Table*/
 const project1Mapping = {
 	locationsSel: 'city',
 	typesSel: 'type',
@@ -19,7 +22,6 @@ const project1Mapping = {
 	languagesSel: 'language_display',
 	religionsSel: 'religion',
 	materialsSel: 'material',
-/*(notBefore:[-200 TO 10000]) AND (notAfter:[-10000 TO 200])*/
 }
 
 const project2Mapping = {
@@ -29,7 +31,6 @@ const project2Mapping = {
 	languagesSel: 'sprache',
 	religionsSel: 'religion',
 	materialsSel: 'material',
-/*&dat_jahr_a=-100&dat_jahr_e*/
 }
 let project2QueryMapping = {
 	locationsSel: {},
@@ -45,7 +46,9 @@ class Search extends Component {
 		super(props);
 		this.fetchData = this.fetchData.bind(this);		
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 		this.state = {
+				/*option List*/
 				locations: [],
 				types:[],
 				physicalTypes:[],
@@ -60,6 +63,11 @@ class Search extends Component {
 				languagesSel:[],
 				religionsSel:[],
 				materialsSel:[],
+
+				/*Text Fields*/
+				from:'',
+				to:'',
+				searchText:''
 			};
 	}
 
@@ -68,7 +76,8 @@ class Search extends Component {
 	}
 
 	fetchData(){
-	    fetch(`/search1`).then(response => response.json()).then(data => {	
+		/*Fetch option list from IIP*/
+		fetch(`/search1`).then(response => response.json()).then(data => {	
 			this.setState({
 				locations:this.uniq(this.state.locations.concat(data.city)),
 				types:this.uniq(this.state.types.concat(data.type)),
@@ -79,6 +88,7 @@ class Search extends Component {
 			});
 		});
 
+		/*Fetch option list and mapping table from EDH*/
 		fetch(`/search2`).then(response => response.text()).then(state => {	
 			let parser = new DOMParser();
 			let doc = parser.parseFromString(state,"text/html");
@@ -110,7 +120,7 @@ class Search extends Component {
 		});
 	}
 
-	//For second website
+	//EDH option parsing
 	findData2(doc, nameString, up){
 		let list = [];
 		let map = {};
@@ -128,10 +138,10 @@ class Search extends Component {
 			}
 		}
 		let rt = {li: list, ma: map};
-		console.log(rt);
 		return rt;			
 	}
 
+	//EDH tree parsing
 	findDataInTree(doc, treeId, up){
 		let list = [];
 		let map = {};
@@ -151,6 +161,8 @@ class Search extends Component {
 		let rt = {li: list, ma: map};
 		return rt;		
 	}
+
+	//make unique list
 	uniq(a) {
     		return a.sort().filter(function(item, pos, ary) {
         		return !pos || item !== ary[pos - 1];
@@ -169,19 +181,26 @@ class Search extends Component {
 					<Filter name="Material" data={this.state.materials} parent={this} cat="materials"/>
 					<div style={{width:"800px", textAlign:"center"}}>
 					<br /> 
-						<div>From: <input id="from" name="from"/></div>
-						<div>To: <input id="to" name="to"/></div>
+						<div>From: <input id="from" name="from" onChange={this.handleChange}/></div>
+						<div>To: <input id="to" name="to" onChange={this.handleChange}/></div>
 					</div>
-					<input type="text" id="searchText" name="searchText"/>
+					<input id="searchText" name="searchText" onChange={this.handleChange}/>
 					<input type="submit" value="Search"/>
 				</form>
 			</div>
 		);
 	}
 
+	handleChange(event){
+		this.setState({
+			[event.target.id]: event.target.value
+		});
+	};
+
+
 	handleSubmit(event){
 		event.preventDefault();
-		/*https://library.brown.edu/search/solr_pub/iip/?start=0&rows=100&indent=on&wt=json&q=region:%22Coastal+Plain%22+%22AND%22+religion:%22jewish%22*/	
+		//make checkbox fields IIP query
 		let query = '';
 		for (let objname in project1Mapping){
 			if (this.state[objname].length !== 0){
@@ -197,25 +216,52 @@ class Search extends Component {
 					}
 					query = query+')';
 				}
-
 			}
 		}
+
+		//make text fields IIP query 
+		if(this.state.from !== ''){	
+			var from = parseInt(this.state["from"], 10);
+			if (isNaN(from)) { 
+				alert("Invalid from value, should be an integer. Negative is BCE and positive is CE.");
+				return;
+			}
+			if ( query === '' ) query = query + '(notBefore:[' +  String(from) + ' TO 10000])';
+			else query = query + '+AND+(notBefore:[' +  String(from) + ' TO 10000])';
+		}
+
+		if(this.state.to !== ''){
+			var to = parseInt(this.state["to"], 10);
+			if (isNaN(to)) { 
+				alert("Invalid to value, should be an integer. Negative is BCE and positive is CE.");
+				return;
+			}
+			if ( query === '' ) query = query + '(notAfter:[-10000 TO ' +  String(to) + '])';
+			else query = query + '+AND+(notAfter:[-10000 TO ' +  String(to) + '])';
+			
+		}
+		if(this.state.searchText !==""){
+			if ( query === '' ) query = query + '(text:%22' +  encodeURI(this.state.searchText.split(' ').join('+')) + '%22)';
+			else query = query + '+AND+(text:%22' +  encodeURI(this.state.searchText.split(' ').join('+')) + '%22)';			
+		}
+		
 		if (query === '') query = '*:*';
 		console.log(query)
 
 
 		/*Pass Query and Jump to Next Page, Next Page Do Following*/
 
-		let jsonData = { queryStr:query, start:"0", rows:"100" };
+		/*let jsonData = { queryStr:query, start:"0", rows:"100" };
 		fetch("/query1", {
 			method: "post",
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(jsonData),
-		}).then(response => response.json()).then(data => {console.log(data)});		
+		}).then(response => response.json()).then(data => {console.log(data)});		*/
 
 		let query2 = '';
+		//make checkbox fields EDH query
 		for (let objname in project2Mapping){
 			if (this.state[objname].length !== 0){
 				for( let i = 0; i < this.state[objname].length; i++){
@@ -228,10 +274,23 @@ class Search extends Component {
 				}
 			}
 		}
+/*&dat_jahr_a=-100&dat_jahr_e&atext1=su+b*/
+		if(this.state.from !== ''){	
+			if ( query2 === '' ) query2 = query2 + 'dat_jahr_a=' +  String(from);
+			else query2 = query2 + '&dat_jahr_a=' +  String(from);
+		}
+		if(this.state.to !== ''){
+			if ( query2 === '' ) query2 = query2 + 'dat_jahr_e=' +  String(to);
+			else query2 = query2 + '&dat_jahr_e=' +  String(to);			
+		}
+		if(this.state.searchText !== ''){
+			if ( query2 === '' ) query2 = query2 + 'atext1=' +  this.state.searchText.split(' ').join('+');
+			else query2 = query2 + '&atext1=' +  this.state.searchText.split(' ').join('+');		
+		}
 		
 		console.log(query2)
-		/*if(query2!==''){			
-			let jsonData = { queryStr:query.q2, start:"0", rows:"100" };
+		if(query2!==''){			
+			let jsonData = { queryStr:query2, start:"0", rows:"100" };
 			fetch("/query2", {
 				method: "post",
 				headers: {
@@ -243,7 +302,7 @@ class Search extends Component {
 			let doc = parser.parseFromString(state,"text/html");
 			console.log(doc);
 			});	
-		}*/
+		}
 		localStorage.setItem('query', JSON.stringify({q1: query, q2: query2}));
 		
 		this.props.history.push('./result');

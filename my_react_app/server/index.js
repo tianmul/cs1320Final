@@ -5,7 +5,7 @@ const app = express();
 const bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(pino);
+//app.use(pino);
 
 let project1 = {};
 let project2 = "";
@@ -54,6 +54,7 @@ app.post('/query1', (req, res) => {
 app.post('/query2', (req, res) => {
 	let website = 'https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche?';
 	let urlPostfix = '&anzahl='+ req.body.rows + '&start=' + req.body.start;
+	console.log(website + req.body.queryStr + urlPostfix);
 
 	axios.get(website + req.body.queryStr + urlPostfix).then((response) => {	
 		res.setHeader('Content-Type', 'text/plain');
