@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+
 import './search.css'
 
 const capitalize = (s) => {
@@ -242,6 +244,7 @@ class Search extends Component {
 		}*/
 		localStorage.setItem('query', JSON.stringify({q1: query, q2: query2}));
 		
+		this.props.history.push('./result');
         	//history.push('/result');
 
 	};

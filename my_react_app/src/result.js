@@ -69,6 +69,10 @@ class Result extends Component {
     this.state = {
     	items: []
     };
+
+	
+	let query = localStorage.getItem('query');
+	console.log(query);
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
