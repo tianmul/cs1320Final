@@ -13,12 +13,13 @@ const lowitalize = (s) => {
 }
 
 const project1Mapping = {
-	locationsSel: 'region',
+	locationsSel: 'city',
 	typesSel: 'type',
 	physicalTypesSel: 'physical_type',
-	languagesSel: 'language',
+	languagesSel: 'language_display',
 	religionsSel: 'religion',
 	materialsSel: 'material',
+/*(notBefore:[-200 TO 10000]) AND (notAfter:[-10000 TO 200])*/
 }
 
 const project2Mapping = {
@@ -28,6 +29,7 @@ const project2Mapping = {
 	languagesSel: 'sprache',
 	religionsSel: 'religion',
 	materialsSel: 'material',
+/*&dat_jahr_a=-100&dat_jahr_e*/
 }
 let project2QueryMapping = {
 	locationsSel: {},
@@ -167,8 +169,8 @@ class Search extends Component {
 					<Filter name="Material" data={this.state.materials} parent={this} cat="materials"/>
 					<div style={{width:"800px", textAlign:"center"}}>
 					<br /> 
-						<div>From: <input type="number" id="from" name="from" step="1"/></div>
-						<div>To: <input type="number" id="to" name="to" step="1"/></div>
+						<div>From: <input id="from" name="from"/></div>
+						<div>To: <input id="to" name="to"/></div>
 					</div>
 					<input type="text" id="searchText" name="searchText"/>
 					<input type="submit" value="Search"/>
@@ -204,14 +206,14 @@ class Search extends Component {
 
 		/*Pass Query and Jump to Next Page, Next Page Do Following*/
 
-		/*let jsonData = { queryStr:query.q1, start:"0", rows:"100" };
+		let jsonData = { queryStr:query, start:"0", rows:"100" };
 		fetch("/query1", {
 			method: "post",
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(jsonData),
-		}).then(response => response.json()).then(data => {console.log(data)});	*/	
+		}).then(response => response.json()).then(data => {console.log(data)});		
 
 		let query2 = '';
 		for (let objname in project2Mapping){
