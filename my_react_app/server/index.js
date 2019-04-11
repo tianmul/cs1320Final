@@ -41,12 +41,22 @@ app.post('/query1', (req, res) => {
 	let website = 'https://library.brown.edu/search/solr_pub/iip/?';
 	let showWhich = 'start=' + req.body.start + '&rows=' + req.body.rows;
 	let urlPostfix = '&indent=on&wt=json&q=';
-	console.log(website + showWhich + urlPostfix + req.body.queryStr);
 
 	axios.get(website + showWhich + urlPostfix + req.body.queryStr).then((response) => {		
 		res.setHeader('Content-Type', 'application/json');
 		res.end( JSON.stringify(response.data) );		
 		console.log("query 1 result returned!");
+	});
+});
+
+app.post('/query2', (req, res) => {
+	let website = 'https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche?';
+	let urlPostfix = '&anzahl='+ req.body.rows + '&start=' + req.body.start;
+
+	axios.get(website + req.body.queryStr + urlPostfix).then((response) => {	
+		res.setHeader('Content-Type', 'text/plain');
+		res.send( response.data.toString() );	
+		console.log("query 2 result returned!");
 	});
 });
 //app.get('/details', (req, res) => {
