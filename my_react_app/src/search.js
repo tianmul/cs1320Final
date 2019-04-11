@@ -204,7 +204,7 @@ class Search extends Component {
 
 		/*Pass Query and Jump to Next Page, Next Page Do Following*/
 
-		/*let jsonData = { queryStr:query, start:"0", rows:"100" };
+		/*let jsonData = { queryStr:query.q1, start:"0", rows:"100" };
 		fetch("/query1", {
 			method: "post",
 			headers: {
@@ -229,7 +229,7 @@ class Search extends Component {
 		
 		console.log(query2)
 		/*if(query2!==''){			
-			let jsonData = { queryStr:query2, start:"0", rows:"100" };
+			let jsonData = { queryStr:query.q2, start:"0", rows:"100" };
 			fetch("/query2", {
 				method: "post",
 				headers: {

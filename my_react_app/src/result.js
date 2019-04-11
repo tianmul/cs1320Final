@@ -70,8 +70,32 @@ class Result extends Component {
     	items: []
     };
 
-	
+	/*Sample Here*/
 	let query = localStorage.getItem('query');
+	
+
+		/*let jsonData = { queryStr:query.q1, start:"0", rows:"100" };
+		fetch("/query1", {
+			method: "post",
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(jsonData),
+		}).then(response => response.json()).then(data => {console.log(data)});	*/	
+		/*if(query2!==''){			
+			let jsonData = { queryStr:query.q2, start:"0", rows:"100" };
+			fetch("/query2", {
+				method: "post",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(jsonData),
+			}).then(response => response.text()).then(state => {	
+			let parser = new DOMParser();
+			let doc = parser.parseFromString(state,"text/html");
+			console.log(doc);
+			});	
+		}*/
 	console.log(query);
     this.componentDidMount = this.componentDidMount.bind(this);
   }
