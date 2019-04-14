@@ -30,6 +30,12 @@
 	margin: 0 auto;
 }
 
+.itemHead {
+	text-align: left;
+	padding-left: 10px;
+	cursor: pointer;
+}
+
 .category {
 	width: 120px;
 	vertical-align: top;
@@ -39,6 +45,7 @@
 .content {
 	text-align: left;
 	padding-left: 10px;
+	width: 100%;
 }
 
 table, tr, td, th{

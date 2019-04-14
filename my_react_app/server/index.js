@@ -62,6 +62,16 @@ app.post('/query2', (req, res) => {
 		console.log("query 2 result returned!");
 	});
 });
+
+app.post('/query2Detail', (req, res) => {
+	let website = 'https://edh-www.adw.uni-heidelberg.de/data/api/inscriptions/search?';
+
+	axios.get(website + req.body.queryStr).then((response) => {	
+		res.setHeader('Content-Type', 'application/json');
+		res.end( JSON.stringify(response.data) );	
+		console.log("query 2 detail returned!");
+	});
+});
 //app.get('/details', (req, res) => {
 //    axios.get('https://library.brown.edu/search/solr_pub/iip/?start=0&rows=1&indent=on&wt=json&q=*').then((response) => {
 //        console.log("fetched");

@@ -62,6 +62,10 @@ class Detail extends Component {
     }
 
     componentDidMount() {
+
+      // Smple code
+      // let detail = JSON.parse(localStorage.getItem('detailData'));
+      // console.log("Here: ", detail);
         this.fetchDetail();
     }
 
