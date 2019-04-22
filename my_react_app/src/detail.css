@@ -1,17 +1,49 @@
-.row{
+.up {
     display: flex;
-    margin: 50px;
+    flex-direction: row;
+    justify-content: space-between;
 }
-.field_des{
-    width:20%;
+
+.left {
+    flex: 2;
+    margin-left: 10vh;
+    border: 1px solid #61dafb;
+    padding: 2%;
+}
+
+.right {
+    flex: 3;
+    margin-right: 10vh;
+    border: 1px solid #61dafb;
+    padding: 1%;
+}
+
+
+.figure {
+    display: block;
+    width:100%;
+    max-height: 200px;
+    max-width: 200px;
+    border: 1px solid #ddd;
+}
+
+
+.row {
+    display: flex;
+    margin: 10px;
+}
+
+.field_des {
+    margin-right: 10%;
+    width: 30%;
     float: left;
-    position:relative;
+    position: relative;
     text-align: left;
 }
 
-.field_con{
-    width:50%;
-    text-align: left;    
+.field_con {
+    width: 50%;
+    text-align: left;
 }
 
 @keyframes App-logo-spin {
