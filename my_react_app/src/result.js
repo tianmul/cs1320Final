@@ -9,7 +9,7 @@ function q1ItemNode(data, num) {
     this.date = data.notBefore + "BCD - " + data.notAfter + " BCD";
     this.language = data.language_display[0];
     this.findSpot = data.place_found;
-    this.fotos = NAImage;
+    this.fotos = "https://raw.githubusercontent.com/Brown-University-Library/iip-images/master/" + data.inscription_id.toLowerCase() + ".jpg";
     this.sequence = num;
     this.title = data.inscription_id.toUpperCase();
     this.data = data;
@@ -56,7 +56,7 @@ class Item extends Component {
                 </thead>
                 <tbody>
                 <tr>
-                    <td className="tdPhoto"><img src={this.props.photo} alt="inscription img" className="photos"/></td>
+                    <td className="tdPhoto"><img src={this.props.photo} onError={(e)=>{e.target.onerror = null; e.target.src=NAImage}} alt="inscription img" className="photos"/></td>
                     <td className="tdContent">
                         <table className="tableContent">
                             <tbody>
