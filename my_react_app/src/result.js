@@ -144,23 +144,19 @@ class Result extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                if (this.state.q2Total === -1) {
+                if (this.state.q1Total === -1) {
+                    this.state.q1Total = data.response.numFound;
+                    this.state.numPages = Math.ceil(this.state.q1Total / this.state.numOnePage);
                     this.setState({
                         q1Total: data.response.numFound,
                         numPages: Math.ceil(this.state.q1Total / this.state.numOnePage)
                     });
-                    // this.state.q1Total = data.response.numFound;
-                    // this.state.numPages = Math.ceil(this.state.q1Total / this.state.numOnePage);
                 }
 
                 for (let i = 0; i < Math.min(this.state.q1Total - this.state.q1Start, this.state.numOnePage); i++) {
                     let node = new q1ItemNode(data.response.docs[i], this.state.q1Start + i + 1);
                     wholeItems.push(node);
                 }
-
-                // console.log("q1 query: ", query.q1);
-                // console.log("q1found: ", data.response.numFound);
-                // console.log("q2 query: ", query.q2);
 
                 if (query.q2 !== '') {
                     let q2Rows = 0;
@@ -183,12 +179,18 @@ class Result extends Component {
 
                             if (this.state.q2Total === -1) {
                                 let resultNum = parseInt((doc.getElementsByTagName("b")[1].innerHTML).split(" ")[2], 10);
+                                // console.log("q2 text result: ", resultNum);
+                                this.state.q2Total = resultNum;
+                                this.state.numPages = Math.ceil((this.state.q1Total + this.state.q2Total) / this.state.numOnePage);
                                 this.setState({
                                     q2Total: resultNum,
-                                    numPages: Math.ceil((this.state.q1Total + this.state.q2Total) / this.state.numOnePage)
+                                    numPages: Math.ceil((this.state.q1Total + this.state.q2Total) / this.state.numOnePage),
                                 });
-                                // this.state.q2Total = resultNum;
-                                // this.state.numPages = Math.ceil((this.state.q1Total + this.state.q2Total) / this.state.numOnePage);
+                                console.log("q1 total: ", this.state.q1Total);
+                                console.log("q2 total: ", this.state.q2Total);
+                                console.log("num of pages: ", Math.ceil((this.state.q1Total + this.state.q2Total) / this.state.numOnePage));
+                                console.log("num of pages: ", this.state.numPages);
+                                
                             }
 
                             // console.log("q2Found: ", this.state.q2Total);
