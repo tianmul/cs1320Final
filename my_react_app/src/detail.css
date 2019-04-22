@@ -7,14 +7,15 @@
 .left {
     flex: 2;
     margin-left: 10vh;
-    border: 1px solid #61dafb;
+    border: 1px solid #ddd;
     padding: 2%;
+    white-space: pre-line;
 }
 
 .right {
     flex: 3;
     margin-right: 10vh;
-    border: 1px solid #61dafb;
+    border: 1px solid #ddd;
     padding: 1%;
 }
 
@@ -25,6 +26,7 @@
     max-height: 200px;
     max-width: 200px;
     border: 1px solid #ddd;
+    margin-bottom: 20px;
 }
 
 
@@ -45,6 +47,21 @@
     width: 50%;
     text-align: left;
 }
+
+.field_des {
+    margin-right: 10%;
+    width: 30%;
+    float: left;
+    position: relative;
+    text-align: left;
+}
+
+.field_con {
+    width: 50%;
+    text-align: left;
+}
+
+
 
 @keyframes App-logo-spin {
     from {

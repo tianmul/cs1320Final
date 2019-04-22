@@ -11,6 +11,15 @@ const generateElement = (key, value) => {
         console.log(key);
         value = "NA";
     }
+    if (value.includes("<") || value.includes(">")) {
+        // Remove span tags
+        if (value.includes("<span>")) {
+            value = value.replace("<span>", "");
+            value = value.replace("</span>", "");
+        }
+        value = stripHTML(value);
+    }
+
     return (
         <div key={key} className="row">
             <div className="field_des">{key}</div>
@@ -19,6 +28,20 @@ const generateElement = (key, value) => {
     );
 };
 
+// const generateSub = (key, value) => {
+//     return (
+//         <div key={key} className="row">
+//             <div className="sub_field_des">{key}</div>
+//             <div className="sub_field_con">{value}</div>
+//         </div>
+//     );
+// };
+
+// Remove HTML tags
+function stripHTML(text) {
+    return text.replace(/<.*?>/gm, '\n');
+}
+
 function generateData(data) {
     if (whichProject(data)) {
         return generateElement("Description:", data["description"]);
@@ -26,21 +49,22 @@ function generateData(data) {
     const newData = Object.keys(data).reduce((result, currentKey) => {
         if ((typeof data[currentKey] === 'string' || data[currentKey] instanceof String)) {
             const elementToPush = generateElement(currentKey, data[currentKey]);
-            if(!proj2.includes((currentKey))){
+            if (!proj2.includes((currentKey))) {
                 result.push(elementToPush);
             }
         } else {
-            // console.log(currentKey);
+            console.log(currentKey);
             let toDisplay = data[currentKey][0];
+            // const nested = generateData(toDisplay);
+            // result.push(nested);
             for (let i = 1; i < data[currentKey].length; i++) {
                 toDisplay = toDisplay + ", " + data[currentKey][i];
+                console.log(toDisplay);
             }
-            if(!proj2.includes((currentKey))){
-                const elementToPush = generateElement(currentKey, toDisplay);
-                result.push(elementToPush);
-            }
-            // const nested = generateData(data[currentKey]);
-            // result.push(...nested);
+            const nested = generateData(data[currentKey]);
+            const elementToPush = generateElement(currentKey, nested);
+
+            result.push(elementToPush);
         }
         return result;
     }, []);
@@ -57,7 +81,21 @@ function whichProject(data) {
 const Common = props => {
     const language = generateElement("Languages:", props.language);
     const dimensions = generateElement("Dimensions:", props.dimensions);
-    const date = generateElement("Date:", props.date);
+    let predate = "";
+    if (props.data.notBefore !== undefined && props.data.notBefore < 0) {
+        let from = -props.data.notBefore;
+        predate = from + " BCE";
+    } else {
+        predate = props.data.notBefore + " CE";
+    }
+    if (props.data.notAfter !== undefined && props.data.notAfter < 0) {
+        let to = -props.data.notAfter;
+        predate = predate + " - " + to + " BCE";
+    } else {
+        predate = predate + " - " + props.data.notAfter + " CE";
+    }
+
+    const date = generateElement("Date:", predate);
     const material = generateElement("Material:", props.material);
     const placeFound = generateElement("Place Found:", props.placeFound);
     const physicalType = generateElement("Physical Type:", props.physicalType);
@@ -76,20 +114,23 @@ const Common = props => {
 const Side = props => {
     const diplomatic = generateElement("Diplomatic:", props.diplomatic);
     const transcription = generateElement("Transcription:", props.transcription);
-    const translation = generateElement("Transcription:", props.translation);
+    const translation = generateElement("Translation:", props.translation);
     let imgUrl = NAImage;
-    {/*TODO: pass figure project1 */}
-    if(whichProject(props.data)){
 
-    }else{
-        if (props.data.fotos !== undefined){
+    if (whichProject(props.data)) {
+        imgUrl = props.url;
+    } else {
+        if (props.data.fotos !== undefined) {
             imgUrl = props.data.fotos;
         }
 
     }
-    console.log(imgUrl);
+
     return (<div className="left">
-        <img className="figure" src={imgUrl} alt="figure"/>
+        <img className="figure" src={imgUrl} onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = NAImage
+        }} alt="figure"/>
         {diplomatic}
         {transcription}
         {translation}
@@ -104,8 +145,12 @@ const Title = props => {
         if (props.data.placeFound !== undefined) {
             return <h3>{props.id} - {props.placeFound}. {props.physicalType}</h3>
         } else {
-            const spot = props.data.findspot_modern + "/" + props.data.findspot_ancient + "(ancient)";
+            let spot = "NA";
+            if (props.data.findspot_modern !== undefined && props.data.findspot_ancient !== undefined) {
+                spot = props.data.findspot_modern + "/" + props.data.findspot_ancient + "(ancient)";
+            }
             return <h3>{props.id} - {spot}. {props.physicalType}</h3>
+
         }
     }
 };
@@ -130,13 +175,13 @@ class Detail extends Component {
         this.componentDidMount = this.componentDidMount.bind(this);
     }
 
-
     componentDidMount() {
         let data = JSON.parse(localStorage.getItem('detailData'));
         console.log("detail page: ", data);
         if (whichProject(data)) {
             this.setState({
                 data: data,
+                url: "https://raw.githubusercontent.com/Brown-University-Library/iip-images/master/" + data.inscription_id.toLowerCase() + ".jpg",
                 id: data.inscription_id,
                 language: data.language_display,
                 dimensions: data.dimensions,
@@ -187,6 +232,7 @@ class Detail extends Component {
                         diplomatic={this.state.diplomatic}
                         transcription={this.state.transcription}
                         translation={this.state.translation}
+                        url={this.state.url}
                     />
 
                     <Common
