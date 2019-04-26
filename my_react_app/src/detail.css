@@ -1,32 +1,51 @@
+body{
+    font-family: Futura,Helvetica,Arial,sans-serif;
+    /*background: #f8f5ec;*/
+}
+h3 {
+
+}
+
 .up {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 
 .left {
-    flex: 2;
+    background: white;
+    box-shadow: 0 4px 8px 0 #ddd;
+    flex: 2 2 auto;
     margin-left: 10vh;
+    margin-right: 5vh;
     border: 1px solid #ddd;
-    padding: 2%;
-    white-space: pre-line;
+    padding: 2% 3% 2% 2%;
+    height: fit-content;
 }
 
 .right {
+    background: white;
+    box-shadow: 0 4px 8px 0 #ddd;
     flex: 3;
     margin-right: 10vh;
     border: 1px solid #ddd;
-    padding: 1%;
+    padding: 2%;
 }
 
-
 .figure {
+    box-shadow: 0 4px 8px 0 #ddd;
+    transition: 0.4s;
     display: block;
-    width:100%;
+    width: 100%;
     max-height: 200px;
     max-width: 200px;
     border: 1px solid #ddd;
     margin-bottom: 20px;
+}
+
+.figure:hover {
+    box-shadow: 0 8px 16px 0 #ddd;
+    transform: scale(1.05);
 }
 
 
@@ -36,16 +55,21 @@
 }
 
 .field_des {
+    padding: 10px;
     margin-right: 10%;
     width: 30%;
+    min-width: 150px;
     float: left;
     position: relative;
     text-align: left;
+    font-weight: 900;
 }
 
 .field_con {
+    padding: 10px;
     width: 50%;
     text-align: left;
+    min-width: 200px;
 }
 
 .field_des {
@@ -60,6 +84,7 @@
     width: 50%;
     text-align: left;
 }
+
 
 
 

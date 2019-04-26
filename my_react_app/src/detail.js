@@ -28,15 +28,6 @@ const generateElement = (key, value) => {
     );
 };
 
-// const generateSub = (key, value) => {
-//     return (
-//         <div key={key} className="row">
-//             <div className="sub_field_des">{key}</div>
-//             <div className="sub_field_con">{value}</div>
-//         </div>
-//     );
-// };
-
 // Remove HTML tags
 function stripHTML(text) {
     return text.replace(/<.*?>/gm, '\n');
@@ -61,10 +52,10 @@ function generateData(data) {
                 toDisplay = toDisplay + ", " + data[currentKey][i];
                 console.log(toDisplay);
             }
-            const nested = generateData(data[currentKey]);
-            const elementToPush = generateElement(currentKey, nested);
-
-            result.push(elementToPush);
+            // const nested = generateData(data[currentKey]);
+            // const elementToPush = generateElement(currentKey, nested);
+            //
+            // result.push(elementToPush);
         }
         return result;
     }, []);

@@ -25,6 +25,7 @@
 }
 
 .itemTable {
+	box-shadow: 0 4px 8px 0 #ddd;
 	margin-bottom: 4px;
 	background-color: #EEEEEE;
 	margin: 0 auto;
