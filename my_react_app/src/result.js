@@ -5,8 +5,23 @@ import './result.css';
 
 function q1ItemNode(data, num) {
     console.log(data);
+    let date = "";
+    if (data.notBefore !== undefined) {
+        if (data.notBefore < 0) {
+            date = -data.notBefore + " BCE";
+        } else {
+            date = data.notBefore + " CE";
+        }     
+    } 
+    if (data.notAfter !== undefined) {
+        if (data.notAfter < 0) {
+            date = date + " - " + -data.notAfter + " BCE";
+        } else {
+            date = date + " - " + data.notAfter + " CE";
+        }
+    } 
     this.transcription = data.text[0];
-    this.date = data.notBefore + "BCD - " + data.notAfter + " BCD";
+    this.date = date;
     this.language = data.language_display[0];
     this.findSpot = data.place_found;
     this.fotos = "https://raw.githubusercontent.com/Brown-University-Library/iip-images/master/" + data.inscription_id.toLowerCase() + ".jpg";
@@ -16,8 +31,24 @@ function q1ItemNode(data, num) {
 }
 
 function q2ItemNode(data, num) {
+    let date = "";
+    if (data.notBefore !== undefined) {
+        if (data.notBefore < 0) {
+            date = -data.notBefore + " BCE";
+        } else {
+            date = data.notBefore + " CE";
+        }     
+    } 
+    if (data.notAfter !== undefined) {
+        if (data.notAfter < 0) {
+            date = date + " - " + -data.notAfter + " BCE";
+        } else {
+            date = date + " - " + data.notAfter + " CE";
+        }
+    } 
+
     this.transcription = data.transcription;
-    this.date = data.not_before + " AD - " + data.not_after + " AD";
+    this.date = date;
     this.language = data.language;
     this.findSpot = data.findspot_modern;
     this.sequence = num;
@@ -135,6 +166,8 @@ class Result extends Component {
         let jsonData = {queryStr: query.q1, start: this.state.q1Start, rows: this.state.numOnePage};
         let wholeItems = [];
 
+        let parent = this;
+
         fetch("/query1", {
             method: "post",
             headers: {
@@ -144,27 +177,28 @@ class Result extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                if (this.state.q1Total === -1) {
-                    this.state.q1Total = data.response.numFound;
-                    this.state.numPages = Math.ceil(this.state.q1Total / this.state.numOnePage);
-                    this.setState({
+                if (parent.state.q1Total === -1) {
+                    parent.state.q1Total = data.response.numFound;
+                    parent.state.numPages = Math.ceil(parent.state.q1Total / parent.state.numOnePage);
+                    parent.setState({
                         q1Total: data.response.numFound,
-                        numPages: Math.ceil(this.state.q1Total / this.state.numOnePage)
+                        numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
                     });
                 }
 
-                for (let i = 0; i < Math.min(this.state.q1Total - this.state.q1Start, this.state.numOnePage); i++) {
-                    let node = new q1ItemNode(data.response.docs[i], this.state.q1Start + i + 1);
+                for (let i = 0; i < Math.min(parent.state.q1Total - parent.state.q1Start, parent.state.numOnePage); i++) {
+                    let node = new q1ItemNode(data.response.docs[i], parent.state.q1Start + i + 1);
                     wholeItems.push(node);
                 }
 
                 if (query.q2 !== '') {
                     let q2Rows = 0;
-                    if (this.state.numOnePage > this.state.q1Total - this.state.q1Start) {
-                        q2Rows = this.state.numOnePage - (this.state.q1Total - this.state.q1Start);
+                    if (parent.state.numOnePage > parent.state.q1Total - parent.state.q1Start) {
+                        q2Rows = parent.state.numOnePage - (parent.state.q1Total - parent.state.q1Start);
                     }
-                    let jsonData2 = {queryStr: query.q2, start: this.state.q2Start, rows: q2Rows};
+                    let jsonData2 = {queryStr: query.q2, start: parent.state.q2Start, rows: q2Rows};
                     let q2IDs = [];
+
                     fetch("/query2", {
                         method: "post",
                         headers: {
@@ -177,29 +211,29 @@ class Result extends Component {
                             let parser = new DOMParser();
                             let doc = parser.parseFromString(state, "text/html");
 
-                            if (this.state.q2Total === -1) {
-                                let resultNum = parseInt((doc.getElementsByTagName("b")[1].innerHTML).split(" ")[2], 10);
-                                // console.log("q2 text result: ", resultNum);
-                                this.state.q2Total = resultNum;
-                                this.state.numPages = Math.ceil((this.state.q1Total + this.state.q2Total) / this.state.numOnePage);
-                                this.setState({
+                            if (parent.state.q2Total === -1) {
+                                let resultNum = 0;
+                                try {
+                                    resultNum = parseInt((doc.getElementsByTagName("b")[1].innerHTML).split(" ")[2], 10);
+                                } catch(err) {
+                                    resultNum = 0;
+                                }
+                                parent.setState({
                                     q2Total: resultNum,
-                                    numPages: Math.ceil((this.state.q1Total + this.state.q2Total) / this.state.numOnePage),
+                                    numPages: Math.ceil((parent.state.q1Total + resultNum) / parent.state.numOnePage),
                                 });
-                                console.log("q1 total: ", this.state.q1Total);
-                                console.log("q2 total: ", this.state.q2Total);
-                                console.log("num of pages: ", Math.ceil((this.state.q1Total + this.state.q2Total) / this.state.numOnePage));
-                                console.log("num of pages: ", this.state.numPages);
+                                console.log("q1 total: ", parent.state.q1Total);
+                                console.log("q2 total: ", parent.state.q2Total);
+                                // console.log("num of pages: ", Math.ceil((parent.state.q1Total + parent.state.q2Total) / parent.state.numOnePage));
+                                // console.log("num of pages: ", parent.state.numPages);
                                 
                             }
 
-                            // console.log("q2Found: ", this.state.q2Total);
-
-                            if (q2Rows === 0) {
-                                this.setState({
+                            if (parent.state.q2Total === 0 || q2Rows === 0) {
+                                parent.setState({
                                     items: wholeItems
                                 });
-                                return
+                                return;
                             }
 
                             let q2Results = doc.getElementsByClassName("linkLastUpdateDetail");
@@ -221,12 +255,12 @@ class Result extends Component {
                                 })
                                     .then(response => response.json())
                                     .then(data => {
-                                        let node = new q2ItemNode(data.items[0], this.state.q1Total + this.state.q2Start + i + 1);
+                                        let node = new q2ItemNode(data.items[0], parent.state.q1Total + parent.state.q2Start + i + 1);
                                         wholeItems.push(node);
 
-                                        if (wholeItems.length === this.state.q1Total - this.state.q1Start + q2IDs.length) {
+                                        if (wholeItems.length === parent.state.q1Total - parent.state.q1Start + q2IDs.length) {
                                             wholeItems.sort((a, b) => (a.sequence > b.sequence) ? 1 : -1);
-                                            this.setState({
+                                            parent.setState({
                                                 items: wholeItems,
                                             });
                                         }
@@ -237,7 +271,7 @@ class Result extends Component {
                             }
                         });
                 } else {
-                    this.setState({
+                    parent.setState({
                         items: wholeItems,
                     });
                 }
@@ -253,6 +287,8 @@ class Result extends Component {
 
         let wholeItems = [];
 
+        let parent = this;
+
         fetch("/query1", {
             method: "post",
             headers: {
@@ -262,12 +298,12 @@ class Result extends Component {
         })
             .then(response => response.json())
             .then(data => {
-                for (let i = 0; i < this.state.numOnePage; i++) {
-                    let node = new q1ItemNode(data.response.docs[i], this.state.q1Start + i + 1);
+                for (let i = 0; i < parent.state.numOnePage; i++) {
+                    let node = new q1ItemNode(data.response.docs[i], parent.state.q1Start + i + 1);
                     wholeItems.push(node);
                 }
 
-                this.setState({
+                parent.setState({
                     items: wholeItems,
                 });
             })
@@ -281,6 +317,9 @@ class Result extends Component {
         let jsonData2 = {queryStr: query.q2, start: this.state.q2Start, rows: this.state.numOnePage};
         let wholeItems = [];
         let q2IDs = [];
+        let parent = this;
+
+        console.log("Enter q2Fetch");
 
         fetch("/query2", {
             method: "post",
@@ -313,12 +352,12 @@ class Result extends Component {
                     })
                         .then(response => response.json())
                         .then(data => {
-                            let node = new q2ItemNode(data.items[0], this.state.q1Total + this.state.q2Start + i + 1);
+                            let node = new q2ItemNode(data.items[0], parent.state.q1Total + parent.state.q2Start + i + 1);
                             wholeItems.push(node);
 
                             if (wholeItems.length === q2IDs.length) {
                                 wholeItems.sort((a, b) => (a.sequence > b.sequence) ? 1 : -1);
-                                this.setState({
+                                parent.setState({
                                     items: wholeItems,
                                 });
                             }
@@ -335,30 +374,40 @@ class Result extends Component {
     }
 
     render() {
+        console.log("total: ", this.state.q1Total + this.state.q2Total);
         return (
             <div className="Items">
                 <div className="topbar"></div>
                 <div className="main-page">
-                    <div className="itemList">
-                        {this.state.items.map((node, index) => <Item key={index} transcription={node.transcription}
-                                                                     date={node.date} language={node.language}
-                                                                     findSpot={node.findSpot} photo={node.fotos}
-                                                                     sequence={node.sequence} title={node.title}
-                                                                     data={node.data}/>)}
+                    {
+                        this.state.q1Total + this.state.q2Total === 0
+                        ? <div className = "noResults">
+                            No results
+                          </div>
+                        : <div className="itemList">
+                            {this.state.items.map((node, index) => <Item key={index} transcription={node.transcription}
+                                                                         date={node.date} language={node.language}
+                                                                         findSpot={node.findSpot} photo={node.fotos}
+                                                                         sequence={node.sequence} title={node.title}
+                                                                         data={node.data}/>)}
+                          </div>
+                    }
+                    
+                    <div id = "react-paginate">
+                        <ReactPaginate
+                            previousLabel={'previous'}
+                            nextLabel={'next'}
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={this.state.numPages}
+                            marginPagesDisplayed={3}
+                            pageRangeDisplayed={3}
+                            onPageChange={this.handlePageClick}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+                        />
                     </div>
-                    <ReactPaginate
-                        previousLabel={'previous'}
-                        nextLabel={'next'}
-                        breakLabel={'...'}
-                        breakClassName={'break-me'}
-                        pageCount={this.state.numPages}
-                        marginPagesDisplayed={3}
-                        pageRangeDisplayed={3}
-                        onPageChange={this.handlePageClick}
-                        containerClassName={'pagination'}
-                        subContainerClassName={'pages pagination'}
-                        activeClassName={'active'}
-                    />
                 </div>
             </div>
         );

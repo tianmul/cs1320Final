@@ -55,6 +55,23 @@ table, tr, td, th{
 	padding: 5px;
 }
 
+.noResults{
+	height: 100%;
+}
+
+#react-paginate ul {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#react-paginate li {
+    display: inline-block;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+    list-style-type: none;
+}
 
 @keyframes App-logo-spin {
   from {
