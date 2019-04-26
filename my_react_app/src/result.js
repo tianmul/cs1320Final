@@ -4,7 +4,7 @@ import ReactPaginate from 'react-paginate';
 import './result.css';
 
 function q1ItemNode(data, num) {
-    console.log(data);
+    // console.log(data);
     let date = "";
     if (data.notBefore !== undefined) {
         if (data.notBefore < 0) {
@@ -138,28 +138,17 @@ class Result extends Component {
 
     handlePageClick = data => {
         let selected = data.selected;
-        // console.log(data);
         console.log("selected: ", selected);
 
         if ((selected + 1) * this.state.numOnePage <= this.state.q1Total) {
-            this.setState({q1Start: selected * this.state.numOnePage});
-            // this.state.q1Start = selected * this.state.numOnePage;
-            this.q1Fetch();
+            this.setState({q1Start: selected * this.state.numOnePage}, () => {this.q1Fetch()});
         } else if ((selected + 1) * this.state.numOnePage < this.state.q1Total + this.state.numOnePage) {
             this.setState({
                 q1Start: selected * this.state.numOnePage,
                 q2Start: 0
-            });
-            // this.state.q1Start = selected * this.state.numOnePage;
-            // this.state.q2Start = 0;
-            console.log("Condition 2", this.state.q1Start);
-            this.mixFetch();
+            }, () => {this.mixFetch()});
         } else {
             this.setState({q2Start: selected * this.state.numOnePage - this.state.q1Total}, () => {this.q2Fetch()});
-            //this.state.q2Start = selected * this.state.numOnePage - this.state.q1Total;
-            // console.log(selected * this.state.numOnePage - this.state.q1Total);
-            // console.log("Condition 3: ", this.state.q2Start);
-            // this.q2Fetch();
         }
     };
 
