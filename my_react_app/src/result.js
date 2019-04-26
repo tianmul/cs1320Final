@@ -138,6 +138,7 @@ class Result extends Component {
 
     handlePageClick = data => {
         let selected = data.selected;
+        // console.log(data);
         console.log("selected: ", selected);
 
         if ((selected + 1) * this.state.numOnePage <= this.state.q1Total) {
@@ -154,10 +155,11 @@ class Result extends Component {
             console.log("Condition 2", this.state.q1Start);
             this.mixFetch();
         } else {
-            this.setState({q2Start: selected * this.state.numOnePage - this.state.q1Total});
+            this.setState({q2Start: selected * this.state.numOnePage - this.state.q1Total}, () => {this.q2Fetch()});
             //this.state.q2Start = selected * this.state.numOnePage - this.state.q1Total;
-            console.log("Condition 3: ", this.state.q2Start);
-            this.q2Fetch();
+            // console.log(selected * this.state.numOnePage - this.state.q1Total);
+            // console.log("Condition 3: ", this.state.q2Start);
+            // this.q2Fetch();
         }
     };
 
@@ -168,9 +170,6 @@ class Result extends Component {
                 ifError: true,
                 errorPrompt: "Please search first."
             });
-            
-            console.log(this.state.ifError);
-            console.log(this.state.errorPrompt);
             return;
         } else {
             query = JSON.parse(localStorage.getItem('query'));
@@ -234,11 +233,7 @@ class Result extends Component {
                                 parent.setState({
                                     q2Total: resultNum,
                                     numPages: Math.ceil((parent.state.q1Total + resultNum) / parent.state.numOnePage),
-                                });
-                                console.log("q1 total: ", parent.state.q1Total);
-                                console.log("q2 total: ", parent.state.q2Total);
-                                // console.log("num of pages: ", parent.state.numPages);
-                                
+                                });    
                             }
 
                             if (parent.state.q2Total === 0 || q2Rows === 0) {
@@ -268,6 +263,7 @@ class Result extends Component {
                                     .then(response => response.json())
                                     .then(data => {
                                         let node = new q2ItemNode(data.items[0], parent.state.q1Total + parent.state.q2Start + i + 1);
+                                        console.log(node.title);
                                         wholeItems.push(node);
 
                                         if (wholeItems.length === parent.state.q1Total - parent.state.q1Start + q2IDs.length) {
@@ -283,6 +279,7 @@ class Result extends Component {
                             }
                         });
                 } else {
+                    this.setState({q2Total: 0});
                     parent.setState({
                         items: wholeItems,
                     });
@@ -332,6 +329,7 @@ class Result extends Component {
         let parent = this;
 
         console.log("Enter q2Fetch");
+        console.log("q2Start: ", this.state.q2Start);
 
         fetch("/query2", {
             method: "post",
@@ -366,6 +364,7 @@ class Result extends Component {
                         .then(data => {
                             let node = new q2ItemNode(data.items[0], parent.state.q1Total + parent.state.q2Start + i + 1);
                             wholeItems.push(node);
+                            console.log(node.title);
 
                             if (wholeItems.length === q2IDs.length) {
                                 wholeItems.sort((a, b) => (a.sequence > b.sequence) ? 1 : -1);
@@ -386,16 +385,16 @@ class Result extends Component {
     }
 
     render() {
+        console.log(this.state.q1Total);
+        console.log(this.state.q2Total);
         console.log("total: ", this.state.q1Total + this.state.q2Total);
-        console.log(this.ifError);
         if (this.state.ifError === false && this.state.q1Total + this.state.q2Total === 0) {
             this.setState({
                 ifError: true,
                 errorPrompt: "No results."
             });
         }
-        console.log(this.state.ifError);
-        console.log(this.state.errorPrompt);
+    
         return (
             <div className="Items">
                 {/*<div className="topbar"></div>*/}
