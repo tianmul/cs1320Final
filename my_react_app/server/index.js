@@ -24,10 +24,15 @@ for( i = 0; i < project1_facets_lists.length; i++){
 	});
 }
 
-axios.get('https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche').then((response) => {		
-	project2 = response.data.toString();
-	console.log("Project 2 cached!");
-});
+function setP2(){
+	axios.get('https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche').then((response) => {		
+		project2 = response.data.toString();
+		console.log("Project 2 cached!");
+	});
+};
+setP2();
+//Update p2 everyday
+setInterval(setP2 , 86400*1000);
 
 app.get('/search1', (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
