@@ -71,8 +71,6 @@ class Item extends Component {
 
     goDetail() {
         localStorage.setItem('detailData', JSON.stringify(this.props.data));
-        // window.location.href = "http://localhost:3000/detail";
-        // console.log(this.props.history);
         this.props.history.push('./detail');
     }
 
@@ -128,6 +126,8 @@ class Result extends Component {
             q2Total: -1,
             numOnePage: 10,
             numPages: 0,
+            ifError: false,
+            errorPrompt: ""
         };
 
         this.handlePageClick = this.handlePageClick.bind(this);
@@ -162,7 +162,20 @@ class Result extends Component {
     };
 
     mixFetch() {
-        let query = JSON.parse(localStorage.getItem('query'));
+        let query;
+        if (localStorage.getItem('query') == null) {
+            this.setState({
+                ifError: true,
+                errorPrompt: "Please search first."
+            });
+            
+            console.log(this.state.ifError);
+            console.log(this.state.errorPrompt);
+            return;
+        } else {
+            query = JSON.parse(localStorage.getItem('query'));
+        }
+        
         let jsonData = {queryStr: query.q1, start: this.state.q1Start, rows: this.state.numOnePage};
         let wholeItems = [];
 
@@ -224,7 +237,6 @@ class Result extends Component {
                                 });
                                 console.log("q1 total: ", parent.state.q1Total);
                                 console.log("q2 total: ", parent.state.q2Total);
-                                // console.log("num of pages: ", Math.ceil((parent.state.q1Total + parent.state.q2Total) / parent.state.numOnePage));
                                 // console.log("num of pages: ", parent.state.numPages);
                                 
                             }
@@ -375,15 +387,23 @@ class Result extends Component {
 
     render() {
         console.log("total: ", this.state.q1Total + this.state.q2Total);
-        console.log("history: ", this.props.history);
+        console.log(this.ifError);
+        if (this.state.ifError == false && this.state.q1Total + this.state.q2Total === 0) {
+            this.setState({
+                ifError: true,
+                errorPrompt: "No results."
+            });
+        }
+        console.log(this.state.ifError);
+        console.log(this.state.errorPrompt);
         return (
             <div className="Items">
                 <div className="topbar"></div>
                 <div className="main-page">
                     {
-                        this.state.q1Total + this.state.q2Total === 0
+                        this.state.ifError
                         ? <div className = "noResults">
-                            No results
+                            {this.state.errorPrompt}
                           </div>
                         : <div className="itemList">
                             {this.state.items.map((node, index) => <Item history={this.props.history} key={index} transcription={node.transcription}
