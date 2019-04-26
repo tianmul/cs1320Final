@@ -1,15 +1,32 @@
-.Filter{ 
-	width:200px;
-	height:300px;
-	float:left;
-	border:1px;
-	overflow-y:scroll;
-} 
-.FilterWarpper{ 
-	width:200px;
-	float:left;
-	border:1px;
-} 
-.CheckBoxSample{ 
-	text-align:left;
+.Search {
+    overflow-y: scroll;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+}
+
+.Filter {
+    width: inherit;
+    margin: 10px;
+    height: 300px;
+    border: 1px;
+    overflow-y: scroll;
+}
+
+.FilterWarpper {
+    flex: 1;
+    max-width: 30vw;
+    min-width: 25%;
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 0 4px 8px 0 #ddd;
+}
+
+.CheckBoxSample {
+    text-align: left;
 } 
