@@ -71,9 +71,9 @@ class Item extends Component {
 
     goDetail() {
         localStorage.setItem('detailData', JSON.stringify(this.props.data));
-        window.location.href = "http://localhost:3000/detail";
+        // window.location.href = "http://localhost:3000/detail";
         // console.log(this.props.history);
-        // this.props.history.push('./detail');
+        this.props.history.push('./detail');
     }
 
     render() {
@@ -375,6 +375,7 @@ class Result extends Component {
 
     render() {
         console.log("total: ", this.state.q1Total + this.state.q2Total);
+        console.log("history: ", this.props.history);
         return (
             <div className="Items">
                 <div className="topbar"></div>
@@ -385,7 +386,7 @@ class Result extends Component {
                             No results
                           </div>
                         : <div className="itemList">
-                            {this.state.items.map((node, index) => <Item key={index} transcription={node.transcription}
+                            {this.state.items.map((node, index) => <Item history={this.props.history} key={index} transcription={node.transcription}
                                                                          date={node.date} language={node.language}
                                                                          findSpot={node.findSpot} photo={node.fotos}
                                                                          sequence={node.sequence} title={node.title}
