@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './search.css'
 
 /*basic functions*/
@@ -170,7 +170,7 @@ class Search extends Component {
     render() {
         return (
             <div className="Search">
-                <form style = {{margin: "40px"}} action="./result" onSubmit={this.handleSubmit}>
+                <form style={{margin: "40px"}} action="./result" onSubmit={this.handleSubmit}>
                     <div className="container">
                         <Filter name="Location" data={this.state.locations} parent={this} cat="locations"/>
                         <Filter name="Type of Inscription" data={this.state.types} parent={this} cat="types"/>
@@ -178,15 +178,21 @@ class Search extends Component {
                         <Filter name="Language" data={this.state.languages} parent={this} cat="languages"/>
                         <Filter name="Religion" data={this.state.religions} parent={this} cat="religions"/>
                         <Filter name="Material" data={this.state.materials} parent={this} cat="materials"/>
-                        <div style={{width: "800px", textAlign: "center"}}>
-                            <br/>
-                            <div>From: <input id="from" name="from" onChange={this.handleChange}/></div>
-                            <div>To: <input id="to" name="to" onChange={this.handleChange}/></div>
-                        </div>
-                        <input id="searchText" name="searchText" onChange={this.handleChange}/>
-                        <input type="submit" value="Search"/>
+
                     </div>
+                    <table>
+                        <tr>
+                            <th>From: <input id="from" name="from" onChange={this.handleChange}/></th>
+                            <th>To: <input id="to" name="to" onChange={this.handleChange}/></th>
+                        </tr>
+                        <tr>
+                            <th>Text: <input id="searchText" name="searchText" onChange={this.handleChange}/></th>
+                        </tr>
+                    </table>
+                    <input className="button-4" type="submit" value="Search"/>
+
                 </form>
+
 
             </div>
         )

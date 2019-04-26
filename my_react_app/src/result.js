@@ -388,7 +388,7 @@ class Result extends Component {
     render() {
         console.log("total: ", this.state.q1Total + this.state.q2Total);
         console.log(this.ifError);
-        if (this.state.ifError == false && this.state.q1Total + this.state.q2Total === 0) {
+        if (this.state.ifError === false && this.state.q1Total + this.state.q2Total === 0) {
             this.setState({
                 ifError: true,
                 errorPrompt: "No results."
@@ -398,7 +398,7 @@ class Result extends Component {
         console.log(this.state.errorPrompt);
         return (
             <div className="Items">
-                <div className="topbar"></div>
+                {/*<div className="topbar"></div>*/}
                 <div className="main-page">
                     {
                         this.state.ifError
