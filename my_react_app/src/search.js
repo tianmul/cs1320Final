@@ -182,11 +182,13 @@ class Search extends Component {
                     </div>
                     <table>
                         <tr>
-                            <th>From: <input id="from" name="from" onChange={this.handleChange}/></th>
-                            <th>To: <input id="to" name="to" onChange={this.handleChange}/></th>
+                            <th><span>From:</span> <input id="from" name="from" onChange={this.handleChange}/>
+                                <span>&nbsp;&nbsp;</span></th>
+                            <th><span>&nbsp;&nbsp;To:</span> <input id="to" name="to" onChange={this.handleChange}/></th>
                         </tr>
+                        <tr><th>&nbsp;</th></tr>
                         <tr>
-                            <th>Text: <input id="searchText" name="searchText" onChange={this.handleChange}/></th>
+                            <th colSpan="2"><span>Text:</span> <input style={{width: "85%"}} id="searchText" name="searchText" onChange={this.handleChange}/></th>
                         </tr>
                     </table>
                     <input className="button-4" type="submit" value="Search"/>

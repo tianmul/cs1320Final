@@ -209,7 +209,7 @@ class Detail extends Component {
 
     render() {
         return (
-            <div>
+            <div className="Detail">
                 <Title
                     data={this.state.data}
                     id={this.state.id}

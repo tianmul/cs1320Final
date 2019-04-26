@@ -1,35 +1,44 @@
-body{
-    font-family: Futura,Helvetica,Arial,sans-serif;
-    /*background: #f8f5ec;*/
+body {
+    font-family: Futura, Helvetica, Arial, sans-serif;
 }
-h3 {
 
+.Detail {
+    font-family: Futura, Helvetica, Arial, sans-serif;
+    margin-top: -50px;
+
+}
+
+h3 {
+    overflow-x: scroll;
 }
 
 .up {
     display: flex;
     flex-direction: row;
-    /*justify-content: space-between;*/
+    padding: 0 5% 20px 5%;
+    flex-wrap: wrap;
+
 }
 
 .left {
     background: white;
     box-shadow: 0 4px 8px 0 #ddd;
-    flex: 2 2 auto;
-    margin-left: 10vh;
-    margin-right: 5vh;
+    flex: 1;
+    margin: 0 0.5%;
     border: 1px solid #ddd;
-    padding: 2% 3% 2% 2%;
+    padding: 2%;
     height: fit-content;
+    width: 50%;
 }
 
 .right {
+    margin: 0 0.5%;
     background: white;
     box-shadow: 0 4px 8px 0 #ddd;
-    flex: 3;
-    margin-right: 10vh;
+    flex: 1;
     border: 1px solid #ddd;
     padding: 2%;
+    width: 50%;
 }
 
 .figure {
@@ -52,13 +61,13 @@ h3 {
 .row {
     display: flex;
     margin: 10px;
+    overflow-wrap: break-word;
 }
 
 .field_des {
     padding: 10px;
     margin-right: 10%;
     width: 30%;
-    min-width: 150px;
     float: left;
     position: relative;
     text-align: left;
@@ -69,7 +78,7 @@ h3 {
     padding: 10px;
     width: 50%;
     text-align: left;
-    min-width: 200px;
+    overflow-x: scroll;
 }
 
 .field_des {
@@ -84,8 +93,6 @@ h3 {
     width: 50%;
     text-align: left;
 }
-
-
 
 
 @keyframes App-logo-spin {
