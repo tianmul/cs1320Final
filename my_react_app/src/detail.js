@@ -108,8 +108,11 @@ const Side = props => {
     const translation = generateElement("Translation:", props.translation);
     let imgUrl = NAImage;
 
-    if (whichProject(props.data)) {
+    if (whichProject(props.data) || (!whichProject(props.data) && props.data.fotos === undefined)) {
         imgUrl = props.url;
+        if (imgUrl === undefined) {
+            imgUrl = NAImage;
+        }
 
         return (<div className="left">
             <img className="figure" src={imgUrl} onError={(e) => {
@@ -128,13 +131,17 @@ const Side = props => {
             imgUrl = props.data.fotos;
         }
 
-
-        return (<div className="left">
-            <img className="figure" src={imgUrl} onError={(e) => {
+        const panel = [];
+        let i = 0;
+        for (; i < imgUrl.length; i++) {
+            panel.push(<img className="figure" src={imgUrl[i]} onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = NAImage
-            }} alt="figure"/>
+            }} alt={imgUrl[i]}/>)
+        }
 
+        return (<div className="left">
+            {panel}
             {diplomatic}
             {transcription}
             {translation}
