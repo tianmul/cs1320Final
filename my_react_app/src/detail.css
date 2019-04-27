@@ -3,14 +3,26 @@ body {
 }
 
 .Detail {
+    display: flex;
+    flex-direction: column;
     font-family: Futura, Helvetica, Arial, sans-serif;
     width: 100%;
-	flex-grow:1;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
 
 }
 
 h3 {
-	/*overflow-x: scroll;*/
+    /*overflow-x: scroll;*/
+}
+
+.errMsg {
+    font-size: 15pt;
+    font-weight: bold;
+    display: table-cell;
+    vertical-align: middle;
+
 }
 
 .up {
