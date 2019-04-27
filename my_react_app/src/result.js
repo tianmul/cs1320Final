@@ -218,10 +218,8 @@ class Result extends Component {
             .then(data => {
                 if (parent.state.q1Total === -1) {
                     parent.state.q1Total = data.response.numFound;
-                    parent.state.numPages = Math.ceil(parent.state.q1Total / parent.state.numOnePage);
                     parent.setState({
                         q1Total: data.response.numFound,
-                        numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
                     });
                 }
 
