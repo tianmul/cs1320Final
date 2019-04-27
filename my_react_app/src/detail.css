@@ -5,11 +5,12 @@ body {
 .Detail {
     font-family: Futura, Helvetica, Arial, sans-serif;
     width: 100%;
+	flex-grow:1;
 
 }
 
 h3 {
-    overflow-x: scroll;
+	/*overflow-x: scroll;*/
 }
 
 .up {
@@ -82,7 +83,7 @@ h3 {
     padding: 10px;
     width: 50%;
     text-align: left;
-    overflow-x: scroll;
+    /*overflow-x: scroll;*/
 }
 
 .field_des {

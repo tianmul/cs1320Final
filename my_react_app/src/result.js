@@ -193,11 +193,12 @@ class Result extends Component {
         if (localStorage.getItem('query') == null) {
             this.setState({
                 ifError: true,
-                errorPrompt: "Please search first."
+                errorPrompt: "Please Search First!"
             });
             return;
         } else {
             query = JSON.parse(localStorage.getItem('query'));
+		console.log("query", query);
         }
 
         let jsonData = {queryStr: query.q1, start: this.state.q1Start, rows: this.state.numOnePage};
@@ -474,7 +475,7 @@ class Result extends Component {
                         {
                             this.state.ifError
                                 ? <div className="noResults">
-                                    {this.state.errorPrompt}
+                                    <b>{this.state.errorPrompt}</b>
                                 </div>
                                 : <div className="itemList">
                                     {this.state.items.map((node, index) => <Item history={this.props.history} key={index}

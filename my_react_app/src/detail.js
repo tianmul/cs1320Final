@@ -134,7 +134,7 @@ const Side = props => {
         const panel = [];
         let i = 0;
         for (; i < imgUrl.length; i++) {
-            panel.push(<img className="figure" src={imgUrl[i]} onError={(e) => {
+            panel.push(<img className="figure" src={imgUrl[i]} key={i} onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = NAImage
             }} alt={imgUrl[i]}/>)

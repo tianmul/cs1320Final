@@ -179,18 +179,25 @@ class Search extends Component {
                         <Filter name="Religion" data={this.state.religions} parent={this} cat="religions"/>
                         <Filter name="Material" data={this.state.materials} parent={this} cat="materials"/>
 
+			<div style={{width: "80%"}} >* Choosing multiple selections in the same category means "or" condition. </div>
+			<div style={{width: "80%"}} >&nbsp;</div>
+			<div style={{width: "80%"}}>* Due to the limitation of a depended website, if you choose multiple selections with "(-)" in the same category, only the first one with "(-)" in this category will be taken into account.</div>
                     </div>
-                    <table>
-                        <tr>
-                            <th><span>From:</span> <input id="from" name="from" onChange={this.handleChange}/>
-                                <span>&nbsp;&nbsp;</span></th>
-                            <th><span>&nbsp;&nbsp;To:</span> <input id="to" name="to" onChange={this.handleChange}/></th>
-                        </tr>
-                        <tr><th>&nbsp;</th></tr>
-                        <tr>
-                            <th colSpan="2"><span>Text:</span> <input style={{width: "85%"}} id="searchText" name="searchText" onChange={this.handleChange}/></th>
-                        </tr>
-                    </table>
+					
+			<table>
+   				<tbody style={{display: "table"}}>
+					<tr>
+						<th><span>From:</span></th>
+						<th><input style={{width: "100%"}}  id="from" name="from" onChange={this.handleChange}/></th>
+						<th><span>&nbsp;&nbsp;To:</span></th>
+						<th><input style={{width: "100%"}}  id="to" name="to" onChange={this.handleChange}/></th>
+					</tr>
+					<tr>
+						<th ><span>Text:</span></th>
+						<th colSpan="3"><input style={{width: "100%"}} id="searchText" name="searchText" onChange={this.handleChange}/></th>
+					</tr>
+				</tbody>
+			</table>
                     <input className="button-4" type="submit" value="Search"/>
 
                 </form>
