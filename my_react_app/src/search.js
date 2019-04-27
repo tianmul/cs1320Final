@@ -178,7 +178,6 @@ class Search extends Component {
                         <Filter name="Language" data={this.state.languages} parent={this} cat="languages"/>
                         <Filter name="Religion" data={this.state.religions} parent={this} cat="religions"/>
                         <Filter name="Material" data={this.state.materials} parent={this} cat="materials"/>
-
 			<div style={{width: "80%"}} >* Choosing multiple selections in the same category means "or" condition. </div>
 			<div style={{width: "80%"}} >&nbsp;</div>
 			<div style={{width: "80%"}}>* Due to the limitation of a depended website, if you choose multiple selections with "(-)" in the same category, only the first one with "(-)" in this category will be taken into account.</div>
@@ -305,21 +304,6 @@ class Search extends Component {
             else query2 = query2 + '&atext1=' + this.state.searchText.split(' ').join('+');
         }
 
-        console.log(query2)
-        if (query2 !== '') {
-            let jsonData = {queryStr: query2, start: "0", rows: "100"};
-            fetch("/query2", {
-                method: "post",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(jsonData),
-            }).then(response => response.text()).then(state => {
-                let parser = new DOMParser();
-                let doc = parser.parseFromString(state, "text/html");
-                console.log(doc);
-            });
-        }
         localStorage.setItem('query', JSON.stringify({q1: query, q2: query2}));
 
         this.props.history.push('./result');

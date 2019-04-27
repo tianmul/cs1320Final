@@ -155,6 +155,7 @@ class Result extends Component {
     handlePageClick = data => {
         let selected = data.selected;
         console.log("selected: ", selected);
+        console.log("selected: ", data);
 
         if ((selected + 1) * this.state.numOnePage <= this.state.q1Total) {
             this.setState({q1Start: selected * this.state.numOnePage}, () => {
@@ -198,7 +199,7 @@ class Result extends Component {
             return;
         } else {
             query = JSON.parse(localStorage.getItem('query'));
-		console.log("query", query);
+		//console.log("query", query);
         }
 
         let jsonData = {queryStr: query.q1, start: this.state.q1Start, rows: this.state.numOnePage};
@@ -306,7 +307,7 @@ class Result extends Component {
                                         }
                                     })
                                     .catch(err => {
-                                        console.log(err);
+                                        //console.log(err);
                                         parent.setState({
                                             q2Finish: true
                                         });
@@ -325,7 +326,7 @@ class Result extends Component {
                 parent.setState({
                     q1Finish: true
                 });
-                console.log(err);
+                //console.log(err);
             });
     }
 
@@ -357,7 +358,7 @@ class Result extends Component {
                 });
             })
             .catch(err => {
-                console.log(err);
+                //console.log(err);
                 parent.setState({
                     q1Finish: true,
                 });
@@ -438,7 +439,7 @@ class Result extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("didupdate", this.state.q2Finish);
+        //console.log("didupdate", this.state.q2Finish);
         if (!this.state.q1Finish || !this.state.q2Finish) {
             if (!prevState.loading) {
                 this.setState({loading: true})
@@ -454,10 +455,10 @@ class Result extends Component {
 
     render() {
 
-        console.log(this.state.q1Total);
-        console.log(this.state.q2Total);
-        console.log(this.state.q1Finish, this.state.q2Finish);
-        console.log("total: ", this.state.q1Total + this.state.q2Total);
+        //console.log(this.state.q1Total);
+        //console.log(this.state.q2Total);
+        //console.log(this.state.q1Finish, this.state.q2Finish);
+        //console.log("total: ", this.state.q1Total + this.state.q2Total);
         if (this.state.ifError === false && this.state.q1Total + this.state.q2Total === 0) {
             this.setState({
                 ifError: true,
@@ -465,9 +466,8 @@ class Result extends Component {
             });
         }
 
-        console.log("render", this.state.loading);
+        //console.log("render", this.state.loading);
         if (this.state.ifError || !this.state.loading) {
-
 
             return (
                 <div className="Items">
