@@ -22,6 +22,9 @@ function q1ItemNode(data, num) {
             date = date + " - " + data.notAfter + " CE";
         }
     }
+    if (date === "") {
+        date = "NA";
+    }
     this.transcription = data.text[0];
     this.date = date;
     this.language = data.language_display[0];
@@ -47,6 +50,9 @@ function q2ItemNode(data, num) {
         } else {
             date = date + " - " + data.notAfter + " CE";
         }
+    }
+    if (date === "") {
+        date = "NA";
     }
 
     this.transcription = data.transcription;
