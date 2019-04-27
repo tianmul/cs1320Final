@@ -73,6 +73,7 @@
 .noResults {
     height: 100%;
 	font-size:15pt;
+    padding-top: 50%;
 }
 
 #react-paginate ul {
