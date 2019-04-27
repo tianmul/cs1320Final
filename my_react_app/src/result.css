@@ -18,8 +18,10 @@
 
 .Items {
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
 }
-
 
 .photos {
     width: auto;
@@ -85,6 +87,7 @@
     cursor: pointer;
     list-style-type: none;
 }
+
 
 @keyframes App-logo-spin {
     from {

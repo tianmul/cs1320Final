@@ -154,7 +154,7 @@ class Result extends Component {
 
     handlePageClick = data => {
         let selected = data.selected;
-        // console.log("selected: ", selected);
+        console.log("selected: ", selected);
 
         if ((selected + 1) * this.state.numOnePage <= this.state.q1Total) {
             this.setState({q1Start: selected * this.state.numOnePage}, () => {
@@ -470,13 +470,7 @@ class Result extends Component {
 
             return (
                 <div className="Items">
-
-
                     <div className="main-page">
-                        {/*{this.state.loading*/}
-                        {/*    ?<div className="load"><ReactLoading type={"bars"} color="black"/></div>*/}
-                        {/*    :null*/}
-                        {/*}*/}
                         {
                             this.state.ifError
                                 ? <div className="noResults">
@@ -492,21 +486,21 @@ class Result extends Component {
                                 </div>
                         }
 
-                        <div id="react-paginate">
-                            <ReactPaginate
-                                previousLabel={'previous'}
-                                nextLabel={'next'}
-                                breakLabel={'...'}
-                                breakClassName={'break-me'}
-                                pageCount={this.state.numPages}
-                                marginPagesDisplayed={3}
-                                pageRangeDisplayed={3}
-                                onPageChange={this.handlePageClick}
-                                containerClassName={'pagination'}
-                                subContainerClassName={'pages pagination'}
-                                activeClassName={'active'}
-                            />
-                        </div>
+                       
+                        <ReactPaginate
+                            previousLabel={'previous'}
+                            nextLabel={'next'}
+                            breakLabel={'...'}
+                            breakClassName={'break-me'}
+                            pageCount={this.state.numPages}
+                            marginPagesDisplayed={3}
+                            pageRangeDisplayed={3}
+                            onPageChange={this.handlePageClick}
+                            containerClassName={'pagination'}
+                            subContainerClassName={'pages pagination'}
+                            activeClassName={'active'}
+                        />
+                        
                     </div>
                 </div>
             );
