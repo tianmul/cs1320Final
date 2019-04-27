@@ -199,7 +199,7 @@ class Result extends Component {
             return;
         } else {
             query = JSON.parse(localStorage.getItem('query'));
-		//console.log("query", query);
+            //console.log("query", query);
         }
 
         let jsonData = {queryStr: query.q1, start: this.state.q1Start, rows: this.state.numOnePage};
@@ -232,7 +232,7 @@ class Result extends Component {
                 parent.setState({
                     q1Finish: true,
                 });
-                if(query.q2 === '') parent.setState({q2Finish: true});
+                if (query.q2 === '') parent.setState({q2Finish: true});
                 if (query.q2 !== '') {
                     let q2Rows = 0;
                     if (parent.state.numOnePage > parent.state.q1Total - parent.state.q1Start) {
@@ -454,7 +454,6 @@ class Result extends Component {
     }
 
     render() {
-
         //console.log(this.state.q1Total);
         //console.log(this.state.q2Total);
         //console.log(this.state.q1Finish, this.state.q2Finish);
@@ -467,27 +466,34 @@ class Result extends Component {
         }
 
         //console.log("render", this.state.loading);
-        if (this.state.ifError || !this.state.loading) {
+        if (this.state.ifError) {
+            return (
+                <div className="Items">
+                    <div className="noResults">
+                        <b>{this.state.errorPrompt}</b>
+                    </div>
+                </div>
+            );
+        } else if (!this.state.loading) {
+            return (<div className="outer">
+                <div className="load">
+                    <ReactLoading type={"bars"} color="black"/>
+                </div>
+            </div>)
+
+        } else {
 
             return (
                 <div className="Items">
                     <div className="main-page">
-                        {
-                            this.state.ifError
-                                ? <div className="noResults">
-                                    <b>{this.state.errorPrompt}</b>
-                                </div>
-                                : <div className="itemList">
-                                    {this.state.items.map((node, index) => <Item history={this.props.history} key={index}
-                                                                                 transcription={node.transcription}
-                                                                                 date={node.date} language={node.language}
-                                                                                 findSpot={node.findSpot} photo={node.fotos}
-                                                                                 sequence={node.sequence} title={node.title}
-                                                                                 data={node.data}/>)}
-                                </div>
-                        }
-
-                       
+                        <div className="itemList">
+                            {this.state.items.map((node, index) => <Item history={this.props.history} key={index}
+                                                                         transcription={node.transcription}
+                                                                         date={node.date} language={node.language}
+                                                                         findSpot={node.findSpot} photo={node.fotos}
+                                                                         sequence={node.sequence} title={node.title}
+                                                                         data={node.data}/>)}
+                        </div>
                         <ReactPaginate
                             previousLabel={'previous'}
                             nextLabel={'next'}
@@ -501,17 +507,12 @@ class Result extends Component {
                             subContainerClassName={'pages pagination'}
                             activeClassName={'active'}
                         />
-                        
                     </div>
                 </div>
             );
-        } else {
-            return (<div className="outer"><div className="load">
-                <ReactLoading type={"bars"} color="black"/>
-            </div></div>)
-
         }
     }
+
 }
 
 export default Result;
