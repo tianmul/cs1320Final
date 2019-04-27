@@ -171,6 +171,7 @@ class Detail extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            auth: true,
             data: [],
             id: "",
             language: "",
@@ -190,6 +191,10 @@ class Detail extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         let data = JSON.parse(localStorage.getItem('detailData'));
+        if(data === null || data.length === 0){
+            this.setState({auth: false});
+            return;
+        }
         console.log("detail page: ", data);
         if (whichProject(data)) {
             this.setState({
@@ -230,6 +235,13 @@ class Detail extends Component {
     }
 
     render() {
+        if(!this.state.auth){
+            return  <div className="Detail">
+                <div className="errMsg">Cannot reach page</div>
+            </div>
+        }
+
+
         return (
             <div className="Detail">
                 <Title
