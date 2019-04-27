@@ -465,35 +465,26 @@ class Result extends Component {
             });
         }
 
-        //console.log("render", this.state.loading);
-        if (this.state.ifError) {
-            return (
-                <div className="Items">
-                    <div className="noResults">
-                        <b>{this.state.errorPrompt}</b>
-                    </div>
-                </div>
-            );
-        } else if (!this.state.loading) {
-            return (<div className="outer">
-                <div className="load">
-                    <ReactLoading type={"bars"} color="black"/>
-                </div>
-            </div>)
-
-        } else {
-
             return (
                 <div className="Items">
                     <div className="main-page">
-                        <div className="itemList">
-                            {this.state.items.map((node, index) => <Item history={this.props.history} key={index}
-                                                                         transcription={node.transcription}
-                                                                         date={node.date} language={node.language}
-                                                                         findSpot={node.findSpot} photo={node.fotos}
-                                                                         sequence={node.sequence} title={node.title}
-                                                                         data={node.data}/>)}
-                        </div>
+                        {this.state.ifError ? <div className="noResults">
+                            <b>{this.state.errorPrompt}</b>
+                        </div> : this.state.loading ? <div className="outer">
+                                <div className="load">
+                                    <ReactLoading type={"bars"} color="black"/>
+                                </div>
+                            </div> :
+                            <div className="itemList">
+                                {this.state.items.map((node, index) => <Item history={this.props.history} key={index}
+                                                                             transcription={node.transcription}
+                                                                             date={node.date} language={node.language}
+                                                                             findSpot={node.findSpot} photo={node.fotos}
+                                                                             sequence={node.sequence} title={node.title}
+                                                                             data={node.data}/>)}
+                            </div>
+
+                        }
                         <ReactPaginate
                             previousLabel={'previous'}
                             nextLabel={'next'}
@@ -511,7 +502,7 @@ class Result extends Component {
                 </div>
             );
         }
-    }
+
 
 }
 
