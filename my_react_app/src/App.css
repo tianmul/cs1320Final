@@ -6,6 +6,10 @@
 }
 
 .innerApp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     flex-grow: 1;
 }
 
@@ -14,7 +18,7 @@
     overflow: hidden;
     margin-left: auto;
     margin-right: auto;
-    margin-top: -20px;
+    padding-top: -20px;
     width: 150px;
 }
 

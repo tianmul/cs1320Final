@@ -110,22 +110,36 @@ const Side = props => {
 
     if (whichProject(props.data)) {
         imgUrl = props.url;
+
+        return (<div className="left">
+            <img className="figure" src={imgUrl} onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = NAImage
+            }} alt="figure"/>
+
+            {diplomatic}
+            {transcription}
+            {translation}
+        </div>);
+
     } else {
         if (props.data.fotos !== undefined) {
+            console.log(props.data.fotos);
             imgUrl = props.data.fotos;
         }
 
-    }
 
-    return (<div className="left">
-        <img className="figure" src={imgUrl} onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = NAImage
-        }} alt="figure"/>
-        {diplomatic}
-        {transcription}
-        {translation}
-    </div>);
+        return (<div className="left">
+            <img className="figure" src={imgUrl} onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = NAImage
+            }} alt="figure"/>
+
+            {diplomatic}
+            {transcription}
+            {translation}
+        </div>);
+    }
 
 };
 
@@ -167,6 +181,7 @@ class Detail extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
         let data = JSON.parse(localStorage.getItem('detailData'));
         console.log("detail page: ", data);
         if (whichProject(data)) {

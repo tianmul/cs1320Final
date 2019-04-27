@@ -2,14 +2,23 @@
     font-family: Futura,Helvetica,Arial,sans-serif;
 }
 
+#root{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+#pageOuter{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #fbf6f1;
+}
 
 .footer {
     width: 100%;
     position: relative;
     height: auto;
     background-color: #333333;
-    margin-top: 10vh;
-
 }
 
 .footer .contain {

@@ -1,12 +1,15 @@
 .outer{
+    display: flex;
     height: auto;
     width: 100%;
-
+    align-items: center;
+    flex-grow: 1;
 }
 
 
 .load {
     display: flex;
+    flex-grow: 1;
     /*margin-top: 20%;*/
     /*margin: auto;*/
     justify-content: center;
