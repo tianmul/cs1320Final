@@ -12,7 +12,7 @@ class App extends Component {
 
             <div className="App">
                 <BrowserRouter>
-                    <div>
+                    <div className="innerApp">
                         <Link to={'/'}><img className="logo" src={logo} alt=" logo"/></Link>
                         <Switch>
                             <Route exact path='/' component={Search}/>

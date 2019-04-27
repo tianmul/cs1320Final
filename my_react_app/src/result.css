@@ -1,3 +1,18 @@
+.outer{
+    height: auto;
+    width: 100%;
+
+}
+
+
+.load {
+    display: flex;
+    /*margin-top: 20%;*/
+    /*margin: auto;*/
+    justify-content: center;
+
+}
+
 .Items {
     text-align: center;
 }
