@@ -55,10 +55,15 @@ function q2ItemNode(data, num) {
         date = "NA";
     }
 
+    if (data.findspot === undefined) {
+        this.findSpot = "NA";
+    } else {
+        this.findSpot = data.findspot;
+    }
+
     this.transcription = data.transcription;
     this.date = date;
     this.language = data.language;
-    this.findSpot = data.findspot_modern;
     this.sequence = num;
     this.title = data.id;
     this.data = data;
@@ -160,8 +165,8 @@ class Result extends Component {
 
     handlePageClick = data => {
         let selected = data.selected;
-        console.log("selected: ", selected);
-        console.log("selected: ", data);
+        // console.log("selected: ", selected);
+        // console.log("selected: ", data);
 
         if ((selected + 1) * this.state.numOnePage <= this.state.q1Total) {
             this.setState({q1Start: selected * this.state.numOnePage}, () => {
@@ -228,7 +233,7 @@ class Result extends Component {
                         q1Total: data.response.numFound,
                     });
                 }
-
+                console.log("q1Total: ", this.state.q1Total);
                 for (let i = 0; i < Math.min(parent.state.q1Total - parent.state.q1Start, parent.state.numOnePage); i++) {
                     let node = new q1ItemNode(data.response.docs[i], parent.state.q1Start + i + 1);
                     wholeItems.push(node);
@@ -236,7 +241,7 @@ class Result extends Component {
                 parent.setState({
                     q1Finish: true,
                 });
-                if (query.q2 === '') parent.setState({q2Finish: true});
+                // if (query.q2 === '') parent.setState({q2Finish: true});
                 if (query.q2 !== '') {
                     let q2Rows = 0;
                     if (parent.state.numOnePage > parent.state.q1Total - parent.state.q1Start) {
@@ -269,6 +274,9 @@ class Result extends Component {
                                     numPages: Math.ceil((parent.state.q1Total + resultNum) / parent.state.numOnePage),
                                 });
                             }
+
+                            
+                            console.log("q2Total: ", this.state.q2Total);
 
                             if (parent.state.q2Total === 0 || q2Rows === 0) {
                                 parent.setState({
@@ -320,9 +328,11 @@ class Result extends Component {
                             }
                         });
                 } else {
-                    this.setState({q2Total: 0});
                     parent.setState({
+                        q2Finish: true,
                         items: wholeItems,
+                        q2Total: 0,
+                        numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
                     });
                 }
             })

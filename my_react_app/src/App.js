@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Redirect } from 'react-router-dom'
 import Search from './search';
 import Result from './result';
 import Detail from './detail';
@@ -18,6 +19,7 @@ class App extends Component {
                             <Route exact path='/' component={Search}/>
                             <Route path='/result' component={Result}/>
                             <Route path='/detail' component={Detail}/>
+                            <Redirect to="/"/>
                         </Switch>
                     </div>
                 </BrowserRouter>
