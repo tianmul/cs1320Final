@@ -20,8 +20,11 @@ Since you need to use sudo and change some file manually, I cannot provide a bas
 	
 Before go to step 4, try to run "serve -s build" first to see which port your website is assigned (normally, it should be 5000).
 
-4. Make website online:
+5. Make website online:
 	- nohup node ./server/index.js > serverLog &
 	- nohup serve -s build > clientLog &
+	
+6. Use exit to close ssh connection!!!!! Force quit will shut the website down.
+	- exit
 
 
