@@ -1,5 +1,27 @@
-1. npm install react-router-dom
-2. npm install express body-parser --save-dev
-3. npm install node-env-run nodemon npm-run-all express-pino-logger pino-colada --save-dev
-4. npm install axios
-5. npm run dev
+Since you need to use sudo and change some file manually, I cannot provide a bash for you to have a quick setup. Just follow the instructions below:
+
+1. Install nodejs:
+	- sudo apt install curl
+	- curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+	- sudo apt install nodejs  
+	- sudo npm install -g serve
+
+2. Setup the website code and package
+	- git clone https://github.com/tianmul/cs1320Final.git
+	- cd cs1320Final/my_react_app/
+	- npm install
+
+3. Change the config file:
+   Change address in config file to your server address (the public ip) with port 3001.
+   If you want to use different port, go to cs1320Final/my_react_app/server/index.js and change the port written in the last line.
+
+4. Build website:
+	- npm run build
+	
+Before go to step 4, try to run "serve -s build" first to see which port your website is assigned.
+
+4. Make website online:
+	- nohup node ./server/index.js > serverLog &
+	- nohup serve -s build > clientLog &
+
+
