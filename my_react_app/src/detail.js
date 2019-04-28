@@ -72,18 +72,24 @@ function whichProject(data) {
 const Common = props => {
     const language = generateElement("Languages:", props.language);
     const dimensions = generateElement("Dimensions:", props.dimensions);
+
     let predate = "";
-    if (props.data.notBefore !== undefined && props.data.notBefore < 0) {
-        let from = -props.data.notBefore;
-        predate = from + " BCE";
-    } else {
-        predate = props.data.notBefore + " CE";
+    if (props.data.notBefore !== undefined) {
+        if (props.data.notBefore < 0) {
+            predate = -props.data.notBefore + "BCE";
+        } else {
+            predate = props.data.notBefore + "CE";
+        }
+    } 
+    if (props.data.notAfter !== undefined) {
+        if (props.data.notAfter < 0) {
+            predate = predate + "-" + (-props.data.notAfter) + "BCE";
+        } else {
+            predate = predate + "-" + props.data.notAfter + "CE";
+        }
     }
-    if (props.data.notAfter !== undefined && props.data.notAfter < 0) {
-        let to = -props.data.notAfter;
-        predate = predate + " - " + to + " BCE";
-    } else {
-        predate = predate + " - " + props.data.notAfter + " CE";
+    if (predate === "") {
+        predate = "NA";
     }
 
     const date = generateElement("Date:", predate);

@@ -34,6 +34,11 @@
     min-width: 200px;
 }
 
+.checkbox {
+    cursor: pointer;
+    display: inline;
+}
+
 .Search table {
     border-collapse: collapse;
     margin-left: auto;

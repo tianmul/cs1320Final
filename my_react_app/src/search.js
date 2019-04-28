@@ -187,13 +187,13 @@ class Search extends Component {
 					
 			<table>
    				<tbody style={{display: "table"}}>
-					<tr>
+					<tr style={{height: "40px"}}>
 						<th><span>From:</span></th>
 						<th><input style={{width: "100%"}}  id="from" name="from" onChange={this.handleChange}/></th>
 						<th><span>&nbsp;&nbsp;To:</span></th>
 						<th><input style={{width: "100%"}}  id="to" name="to" onChange={this.handleChange}/></th>
 					</tr>
-					<tr>
+					<tr style={{height: "40px"}}>
 						<th ><span>Text:</span></th>
 						<th colSpan="3"><input style={{width: "100%"}} id="searchText" name="searchText" onChange={this.handleChange}/></th>
 					</tr>
@@ -341,7 +341,7 @@ class CheckBoxSample extends Component {
     render() {
         return (
             <div className="CheckBoxSample">
-                <input name={this.props.name} id={this.props.id + "Checkbox"} type="checkbox"
+                <input name={this.props.name} id={this.props.id + "Checkbox"} type="checkbox" className="checkbox"
                        onChange={this.handleChange}/>
                 <span>{'  '}{this.props.name}</span>
             </div>
