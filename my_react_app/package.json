@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "axios": "^0.18.0",
+    "cors": "^2.8.5",
     "material-components-web": "^1.1.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
