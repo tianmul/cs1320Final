@@ -12,13 +12,13 @@ Since you need to use sudo and change some file manually, I cannot provide a bas
 	- npm install
 
 3. Change the config file:
-   Change address in config file to your server address (the public ip) with port 3001.
-   If you want to use different port, go to cs1320Final/my_react_app/server/index.js and change the port written in the last line.
+   Change address in config file (cs1320Final/my_react_app/src/config.js) to your server address (the public ip) with port 3001.
+   If you want to use a different port, go to cs1320Final/my_react_app/server/index.js and change the port written in the last line.
 
 4. Build website:
 	- npm run build
 	
-Before go to step 4, try to run "serve -s build" first to see which port your website is assigned.
+Before go to step 4, try to run "serve -s build" first to see which port your website is assigned (normally, it should be 5000).
 
 4. Make website online:
 	- nohup node ./server/index.js > serverLog &
