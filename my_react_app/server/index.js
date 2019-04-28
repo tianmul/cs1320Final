@@ -1,8 +1,10 @@
 const axios = require('axios');
 const express = require('express');
 const pino = require('express-pino-logger')();
+const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser')
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 //app.use(pino);
@@ -13,6 +15,7 @@ let project2 = "";
 const project1_facets_lists = ["type", "city", "language_display", "physical_type", "religion", "material"];
 for( i = 0; i < project1_facets_lists.length; i++){
 	let facet = project1_facets_lists[i];
+	console.log("getting");
 	axios.get('https://library.brown.edu/search/solr_pub/iip/?q=*:*&start=0&rows=0&indent=on&facet=on&facet.field=' + facet + '&wt=json').then((response) => {
 		let returnData = response.data.facet_counts.facet_fields[facet];
 		let facetList = [];
@@ -21,7 +24,7 @@ for( i = 0; i < project1_facets_lists.length; i++){
 		}
 		project1[facet] = facetList;
 		console.log(facet + " Get!");
-	});
+	}).catch(function(error){ console.log(error);});
 }
 
 function setP2(){
@@ -38,7 +41,7 @@ app.get('/search1', (req, res) => {
 	res.setHeader('Content-Type', 'application/json');
 	res.end( JSON.stringify(project1) );
 });
-app.get('/search2', (req, res) => {
+app.get('/search2', cors(), (req, res) => {
 	res.setHeader('Content-Type', 'text/plain');
 	res.send( project2 );
 });

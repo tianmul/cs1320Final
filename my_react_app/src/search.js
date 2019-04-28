@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import './search.css'
 
+const addr="http://18.223.15.62:3001/"
+
 /*basic functions*/
 const capitalize = (s) => {
     if (typeof s !== 'string') return ''
@@ -75,7 +77,7 @@ class Search extends Component {
 
     fetchData() {
         /*Fetch option list from IIP*/
-        fetch(`/search1`).then(response => response.json()).then(data => {
+        fetch(addr + `search1`).then(response => response.json()).then(data => {
             this.setState({
                 locations: this.uniq(this.state.locations.concat(data.city)),
                 types: this.uniq(this.state.types.concat(data.type)),
@@ -87,7 +89,7 @@ class Search extends Component {
         });
 
         /*Fetch option list and mapping table from EDH*/
-        fetch(`/search2`).then(response => response.text()).then(state => {
+        fetch(addr + `search2`).then(response => response.text()).then(state => {
             let parser = new DOMParser();
             let doc = parser.parseFromString(state, "text/html");
 
