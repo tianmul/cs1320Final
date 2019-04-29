@@ -499,7 +499,9 @@ class Result extends Component {
     componentDidMount() {
         this.setState({
             q1Finish: false,
-            q2Finish: false
+            q2Finish: false,
+            q1Down: false,
+            q2Down: false
         });
         this.mixFetch();
     }
@@ -514,23 +516,24 @@ class Result extends Component {
             if (prevState.loading) {
                 this.setState({loading: false})
             }
+        }
 
+        if (this.state.q1Down && this.state.q2Down) {
+            console.log("Both down");
+            if (!prevState.ifError) {
+                this.setState({
+                    ifError: true,
+                    errorPrompt: "The source website has blocked our access, please contact the adminstrator."
+                });
+            } 
         }
     }
 
     render() {
-        if (this.state.ifError === false && this.state.q1Total + this.state.q2Total === 0) {
+        if (!this.state.ifError && this.state.q1Total + this.state.q2Total === 0) {
             this.setState({
                 ifError: true,
                 errorPrompt: "No results."
-            });
-        }
-
-        if (this.state.q1Down === true && this.state.q2Down === true) {
-            console.log("Both down");
-            this.setState({
-                ifError: true,
-                errorPrompt: "The source website has blocked our access, please contact the adminstrator."
             });
         }
 
