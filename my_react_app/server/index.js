@@ -53,8 +53,8 @@ app.get('/search2', (req, res) => {
 	res.send( project2 );
 });
 app.post('/query1', (req, res) => {
-	let website = 'https://library.brown.edu/search/solr_pub/iip/?';
-	// let website = 'https://library.brown.edu/search/solr_pub/?';
+	// let website = 'https://library.brown.edu/search/solr_pub/iip/?';
+	let website = 'https://library.brown.edu/search/solr_pub/?';
 	let showWhich = 'start=' + req.body.start + '&rows=' + req.body.rows;
 	let urlPostfix = '&indent=on&wt=json&q=';
 	console.log(website + showWhich + urlPostfix + req.body.queryStr);
@@ -71,8 +71,8 @@ app.post('/query1', (req, res) => {
 });
 
 app.post('/query2', (req, res) => {
-	let website = 'https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche?';
-	// let website = 'https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterte?';
+	// let website = 'https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche?';
+	let website = 'https://edh-www.adw.uni-heidelber/inschrift?';
 	let urlPostfix = '&anzahl='+ req.body.rows + '&start=' + req.body.start;
 	console.log(website + req.body.queryStr + urlPostfix);
 

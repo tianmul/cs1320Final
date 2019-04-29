@@ -303,6 +303,7 @@ class Result extends Component {
                     return;
                 });
         } else {
+            console.log("query 2 is empty");
             parent.setState({
                 q2Finish: true,
                 items: wholeItems,
