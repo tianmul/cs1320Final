@@ -80,7 +80,7 @@ class Search extends Component {
     fetchData() {
         /*Fetch option list from IIP*/
         fetch(addr + 'search1').then(response => response.json()).then(data => {
-            this.setState({
+             this.setState({
                 locations: this.uniq(this.state.locations.concat(data.city)),
                 types: this.uniq(this.state.types.concat(data.type)),
                 physicalTypes: this.uniq(this.state.physicalTypes.concat(data.physical_type)),
@@ -166,7 +166,9 @@ class Search extends Component {
 
     //make unique list
     uniq(a) {
-        return a.sort().filter(function (item, pos, ary) {
+        return a.sort().filter(function (el) {
+            return el != null;
+        }).filter(function (item, pos, ary) {
             return !pos || item !== ary[pos - 1];
         });
     }

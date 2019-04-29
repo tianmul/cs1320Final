@@ -33,6 +33,11 @@ function setP2(){
 	axios.get('https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche').then((response) => {		
 		project2 = response.data.toString();
 		console.log("Project 2 cached!");
+	}).catch(function(error){
+		project2 = "";
+		console.log(error);
+		console.log("Project 2 cache error!")
+
 	});
 };
 setP2();
@@ -87,16 +92,6 @@ app.post('/query2Detail', (req, res) => {
 		console.log("query 2 detail returned!");
 	});
 });
-//app.get('/details', (req, res) => {
-//    axios.get('https://library.brown.edu/search/solr_pub/iip/?start=0&rows=1&indent=on&wt=json&q=*').then((response) => {
-//        console.log("fetched");
-////        res.header("Access-Control-Allow-Origin", "*");
-////        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//
-//        res.setHeader('Content-Type', 'text/plain');
-//        res.send(response);
-//    });
-//});
 
 app.listen(3001, () =>
            console.log('Express server is running on localhost:3001')

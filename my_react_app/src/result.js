@@ -207,7 +207,13 @@ class Result extends Component {
                 errorPrompt: "Please Search First!"
             });
             return;
-        } else {
+        }else if (JSON.parse(localStorage.getItem('query')).q1 === "*:*") {
+            this.setState({
+                ifError: true,
+                errorPrompt: "Please Search Something!"
+            });
+            return;
+        }  else {
             query = JSON.parse(localStorage.getItem('query'));
         }
 
