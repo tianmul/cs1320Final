@@ -526,7 +526,7 @@ class Result extends Component {
                     errorPrompt: "The source website has blocked our access, please contact the adminstrator."
                 });
             } 
-        }
+        } 
     }
 
     render() {
@@ -536,9 +536,6 @@ class Result extends Component {
                 errorPrompt: "No results."
             });
         }
-
-        console.log("ifError: ", this.state.ifError);
-        console.log("errorPrompt: ", this.state.errorPrompt);
 
         return (
             <div className="Items">
