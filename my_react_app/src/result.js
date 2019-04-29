@@ -7,6 +7,10 @@ import { config } from './config.js';
 
 const addr=config.addr;
 
+const getAddr = () => {
+	return addr[Math.floor(Math.random() * addr.length)]; 
+};
+
 function q1ItemNode(data, num) {
     let date = "";
     if (data.notBefore !== undefined) {
@@ -203,7 +207,7 @@ class Result extends Component {
     };
 
     mixFetchQ2(query, wholeItems) {
-        console.log("q1Total: ", this.state.q1Total);
+        //console.log("q1Total: ", this.state.q1Total);
 
         let parent = this;
 
@@ -215,7 +219,7 @@ class Result extends Component {
             let jsonData2 = {queryStr: query.q2, start: parent.state.q2Start, rows: q2Rows};
             let q2IDs = [];
 
-            fetch(addr + "query2", {
+            fetch(getAddr() + "query2", {
                 method: "post",
                 headers: {
                     'Content-Type': 'application/json'
@@ -240,7 +244,7 @@ class Result extends Component {
                         });
                     }
 
-                    console.log("q2Total: ", parent.state.q2Total)
+                    //console.log("q2Total: ", parent.state.q2Total)
 
                     if (parent.state.q2Total === 0 || q2Rows === 0) {
                         parent.setState({
@@ -261,7 +265,7 @@ class Result extends Component {
 
                     for (let i = 0; i < q2IDs.length; i++) {
                         let jsonDataDetail = {queryStr: "hd_nr=" + q2IDs[i]};
-                        fetch(addr + "query2Detail", {
+                        fetch(getAddr() + "query2Detail", {
                             method: "post",
                             headers: {
                                 'Content-Type': 'application/json'
@@ -303,7 +307,7 @@ class Result extends Component {
                     return;
                 });
         } else {
-            console.log("query 2 is empty");
+            //console.log("query 2 is empty");
             parent.setState({
                 q2Finish: true,
                 items: wholeItems,
@@ -336,7 +340,7 @@ class Result extends Component {
 
         let parent = this;
 
-        fetch(addr + "query1", {
+        fetch(getAddr() + "query1", {
             method: "post",
             headers: {
                 'Content-Type': 'application/json'
@@ -391,7 +395,7 @@ class Result extends Component {
 
         let parent = this;
 
-        fetch(addr + "query1", {
+        fetch(getAddr() + "query1", {
             method: "post",
             headers: {
                 'Content-Type': 'application/json'
@@ -429,7 +433,7 @@ class Result extends Component {
         let q2IDs = [];
         let parent = this;
 
-        fetch(addr + "query2", {
+        fetch(getAddr() + "query2", {
             method: "post",
             headers: {
                 'Content-Type': 'application/json'
@@ -451,7 +455,7 @@ class Result extends Component {
 
                 for (let i = 0; i < q2IDs.length; i++) {
                     let jsonDataDetail = {queryStr: "hd_nr=" + q2IDs[i]};
-                    fetch(addr + "query2Detail", {
+                    fetch(getAddr() + "query2Detail", {
                         method: "post",
                         headers: {
                             'Content-Type': 'application/json'
@@ -516,7 +520,7 @@ class Result extends Component {
         }
 
         if (this.state.q1Down && this.state.q2Down) {
-            console.log("Both down");
+            //console.log("Both down");
             if (!prevState.ifError) {
                 this.setState({
                     ifError: true,
@@ -524,9 +528,9 @@ class Result extends Component {
                 });
             } 
         } else if (!this.state.ifError && this.state.q1Total === 0 && this.state.q2Total === 0) {
-            console.log("ifError", this.state.ifError);
-            console.log("q1Total: ", this.state.q1Total);
-            console.log("q2Total: ", this.state.q2Total);
+            //console.log("ifError", this.state.ifError);
+            //console.log("q1Total: ", this.state.q1Total);
+            //console.log("q2Total: ", this.state.q2Total);
             this.setState({
                 ifError: true,
                 errorPrompt: "No results."

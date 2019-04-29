@@ -13,20 +13,23 @@ let project1 = {};
 let project2 = "";
 
 const project1_facets_lists = ["type", "city", "language_display", "physical_type", "religion", "material"];
-for( i = 0; i < project1_facets_lists.length; i++){
-	let facet = project1_facets_lists[i];
-	axios.get('https://library.brown.edu/search/solr_pub/iip/?q=*:*&start=0&rows=0&indent=on&facet=on&facet.field=' + facet + '&wt=json').then((response) => {
-		let returnData = response.data.facet_counts.facet_fields[facet];
-		let facetList = [];
-		for ( j = 0; j < returnData.length; j++){
-			if( j%2 === 0 && returnData[j]!=="") facetList.push(returnData[j]);
-		}
-		project1[facet] = facetList;
-		console.log(facet + " Get!");
-	}).catch(function(error){
-		console.log("enter faceList Error");
-		console.log(error);
-	});
+
+function setP1(){
+	for( i = 0; i < project1_facets_lists.length; i++){
+		let facet = project1_facets_lists[i];
+		axios.get('https://library.brown.edu/search/solr_pub/iip/?q=*:*&start=0&rows=0&indent=on&facet=on&facet.field=' + facet + '&wt=json').then((response) => {
+			let returnData = response.data.facet_counts.facet_fields[facet];
+			let facetList = [];
+			for ( j = 0; j < returnData.length; j++){
+				if( j%2 === 0 && returnData[j]!=="") facetList.push(returnData[j]);
+			}
+			project1[facet] = facetList;
+			console.log(facet + " Get!");
+		}).catch(function(error){
+			console.log("enter faceList Error");
+			console.log(error);
+		});
+	};
 }
 
 function setP2(){
@@ -40,7 +43,11 @@ function setP2(){
 
 	});
 };
+setP1();
 setP2();
+//Update p2 everyday
+setInterval(setP1 , 86400*1000);
+
 //Update p2 everyday
 setInterval(setP2 , 86400*1000);
 
