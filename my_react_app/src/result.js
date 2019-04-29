@@ -534,6 +534,9 @@ class Result extends Component {
             });
         }
 
+        console.log("ifError: ", this.state.ifError);
+        console.log("errorPrompt: ", this.state.errorPrompt);
+
         return (
             <div className="Items">
                 <div className="main-page">
