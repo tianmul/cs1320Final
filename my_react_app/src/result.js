@@ -291,6 +291,11 @@ class Result extends Component {
                 })
                 .catch(err => {
                     console.log("q2Fetch catch err: ", err);
+                    this.setState({
+                        ifError: true,
+                        errorPrompt: "The source website has blocked our access, please contact the adminstrator."
+                    });
+                    return;
                 });
         } else {
             console.log("q1Total: ", parent.state.q1Total);
