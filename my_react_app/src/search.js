@@ -5,7 +5,7 @@ import { config } from './config.js';
 const addr=config.addr;
 
 const getAddr = () => {
-	console.log(Math.floor(Math.random() * addr.length));
+	console.log(addr[Math.floor(Math.random() * addr.length)]);
 	return addr[Math.floor(Math.random() * addr.length)]; 
 };
 //console.log(addr);
@@ -84,7 +84,9 @@ class Search extends Component {
 
     fetchData() {
         /*Fetch option list from IIP*/
-        fetch(getAddr() + 'search1').then(response => response.json()).then(data => {
+	let server = getAddr();
+	console.log("fetching 1 from" + server);
+        fetch(server + 'search1').then(response => response.json()).then(data => {
              this.setState({
                 locations: this.uniq(this.state.locations.concat(data.city)),
                 types: this.uniq(this.state.types.concat(data.type)),
@@ -96,7 +98,9 @@ class Search extends Component {
         });
 
         /*Fetch option list and mapping table from EDH*/
-        fetch(getAddr() +  'search2').then(response => response.text()).then(state => {
+	server = getAddr();
+	console.log("fetching 2 from" + server);
+        fetch(server +  'search2').then(response => response.text()).then(state => {
             let parser = new DOMParser();
             let doc = parser.parseFromString(state, "text/html");
 
