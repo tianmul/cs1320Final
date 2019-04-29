@@ -237,6 +237,8 @@ class Result extends Component {
                         });
                     }
 
+                    console.log("q2Total: ", parent.state.q2Total)
+
                     if (parent.state.q2Total === 0 || q2Rows === 0) {
                         parent.setState({
                             items: wholeItems,
