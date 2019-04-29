@@ -215,6 +215,7 @@ class Result extends Component {
         let wholeItems = [];
 
         let parent = this;
+        console.log("here");
 
         fetch(addr + "query1", {
             method: "post",
