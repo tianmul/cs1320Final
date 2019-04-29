@@ -201,6 +201,9 @@ class Result extends Component {
     };
 
     mixFetchQ2() {
+        console.log("enter mixFetchQ2");
+        console.log("q1finish: ", this.state.q1Finish);
+        console.log("q2finish: ", this.state.q2Finish)
         if (query.q2 !== '') {
             let q2Rows = 0;
             if (parent.state.numOnePage > parent.state.q1Total - parent.state.q1Start) {
