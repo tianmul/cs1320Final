@@ -203,9 +203,7 @@ class Result extends Component {
     };
 
     mixFetchQ2(query, wholeItems) {
-        console.log("enter mixFetchQ2");
-        console.log("q1finish: ", this.state.q1Finish);
-        console.log("q2finish: ", this.state.q2Finish);
+        console.log("q1Total: ", this.state.q1Total);
 
         let parent = this;
 
@@ -305,7 +303,6 @@ class Result extends Component {
                     return;
                 });
         } else {
-            console.log("q1Total: ", parent.state.q1Total);
             parent.setState({
                 q2Finish: true,
                 items: wholeItems,
@@ -346,9 +343,9 @@ class Result extends Component {
             body: JSON.stringify(jsonData),
         })
             .then(response => {
-		        console.log("enter into response");
+		        // console.log("enter into response");
                 if (response.ok) {
-                    console.log("response ok");
+                    // console.log("response ok");
                     return response.json();
                 } else {
 			        console.log("response not ok");
@@ -356,7 +353,6 @@ class Result extends Component {
                 } 
             })
             .then(data => {
-		        console.log("Enter into data");	
                 if (parent.state.q1Total === -1) {
                     parent.state.q1Total = data.response.numFound;
                     parent.setState({
@@ -375,7 +371,7 @@ class Result extends Component {
                 parent.mixFetchQ2(query, wholeItems);
             })
             .catch(err => {
-                console.log("q1Fetch cartch err: ", err);
+                console.log("q1Fetch catch err: ", err);
                 parent.setState({
                     q1Total: 0,
                     q1Finish: true,
@@ -526,17 +522,18 @@ class Result extends Component {
                     errorPrompt: "The source website has blocked our access, please contact the adminstrator."
                 });
             } 
-        } 
-    }
-
-    render() {
-        if (!this.state.ifError && this.state.q1Total + this.state.q2Total === 0) {
+        } else if (!this.state.ifError && this.state.q1Total === 0 && this.state.q2Total === 0) {
+            console.log("ifError", this.state.ifError);
+            console.log("q1Total: ", this.state.q1Total);
+            console.log("q2Total: ", this.state.q2Total);
             this.setState({
                 ifError: true,
                 errorPrompt: "No results."
             });
         }
+    }
 
+    render() {
         return (
             <div className="Items">
                 <div className="main-page">

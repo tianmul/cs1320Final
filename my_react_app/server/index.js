@@ -54,6 +54,7 @@ app.get('/search2', (req, res) => {
 });
 app.post('/query1', (req, res) => {
 	let website = 'https://library.brown.edu/search/solr_pub/iip/?';
+	// let website = 'https://library.brown.edu/search/solr_pub/?';
 	let showWhich = 'start=' + req.body.start + '&rows=' + req.body.rows;
 	let urlPostfix = '&indent=on&wt=json&q=';
 	console.log(website + showWhich + urlPostfix + req.body.queryStr);
@@ -64,15 +65,14 @@ app.post('/query1', (req, res) => {
 	   	console.log("query 1 result returned!"); 
 	}).catch(function(err){
 		res.setHeader('Content-Type', 'application/json'); 
-		console.log("catch error");
-		console.log("error:", err);
-		console.log(typeof err);
+		console.log("query1 error:", err);
 	 	res.end(JSON.stringify({error:"err"}));   
 	});
 });
 
 app.post('/query2', (req, res) => {
 	let website = 'https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterteSuche?';
+	// let website = 'https://edh-www.adw.uni-heidelberg.de/inschrift/erweiterte?';
 	let urlPostfix = '&anzahl='+ req.body.rows + '&start=' + req.body.start;
 	console.log(website + req.body.queryStr + urlPostfix);
 
@@ -80,6 +80,10 @@ app.post('/query2', (req, res) => {
 		res.setHeader('Content-Type', 'text/plain');
 		res.send( response.data.toString() );	
 		console.log("query 2 result returned!");
+	}).catch(function(err){
+		res.setHeader('Content-Type', 'application/json'); 
+		console.log("query2 error:", err);
+		res.end(JSON.stringify({error:"err"}));  
 	});
 });
 
