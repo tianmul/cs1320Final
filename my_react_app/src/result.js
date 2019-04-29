@@ -6,10 +6,8 @@ import ReactLoading from 'react-loading';
 import { config } from './config.js';
 
 const addr=config.addr;
-// console.log(addr);
 
 function q1ItemNode(data, num) {
-    // console.log(data);
     let date = "";
     if (data.notBefore !== undefined) {
         if (data.notBefore < 0) {
@@ -168,8 +166,6 @@ class Result extends Component {
 
     handlePageClick = data => {
         let selected = data.selected;
-        // console.log("selected: ", selected);
-        // console.log("selected: ", data);
 
         if ((selected + 1) * this.state.numOnePage <= this.state.q1Total) {
             this.setState({q1Start: selected * this.state.numOnePage}, () => {
@@ -213,7 +209,6 @@ class Result extends Component {
             return;
         } else {
             query = JSON.parse(localStorage.getItem('query'));
-            //console.log("query", query);
         }
 
         let jsonData = {queryStr: query.q1, start: this.state.q1Start, rows: this.state.numOnePage};
@@ -236,7 +231,7 @@ class Result extends Component {
                         q1Total: data.response.numFound,
                     });
                 }
-                // console.log("q1Total: ", this.state.q1Total);
+                
                 for (let i = 0; i < Math.min(parent.state.q1Total - parent.state.q1Start, parent.state.numOnePage); i++) {
                     let node = new q1ItemNode(data.response.docs[i], parent.state.q1Start + i + 1);
                     wholeItems.push(node);
@@ -244,7 +239,7 @@ class Result extends Component {
                 parent.setState({
                     q1Finish: true,
                 });
-                // if (query.q2 === '') parent.setState({q2Finish: true});
+                
                 if (query.q2 !== '') {
                     let q2Rows = 0;
                     if (parent.state.numOnePage > parent.state.q1Total - parent.state.q1Start) {
@@ -277,8 +272,6 @@ class Result extends Component {
                                     numPages: Math.ceil((parent.state.q1Total + resultNum) / parent.state.numOnePage),
                                 });
                             }
-                            
-                            // console.log("q2Total: ", this.state.q2Total);
 
                             if (parent.state.q2Total === 0 || q2Rows === 0) {
                                 parent.setState({
@@ -309,7 +302,6 @@ class Result extends Component {
                                     .then(response => response.json())
                                     .then(data => {
                                         let node = new q2ItemNode(data.items[0], parent.state.q1Total + parent.state.q2Start + i + 1);
-                                        // console.log(node.title);
                                         wholeItems.push(node);
 
                                         if (wholeItems.length === parent.state.q1Total - parent.state.q1Start + q2IDs.length) {
@@ -374,7 +366,7 @@ class Result extends Component {
                 });
             })
             .catch(err => {
-                //console.log(err);
+                console.log(err);
                 parent.setState({
                     q1Finish: true,
                 });
@@ -388,9 +380,6 @@ class Result extends Component {
         let wholeItems = [];
         let q2IDs = [];
         let parent = this;
-
-        // console.log("Enter q2Fetch");
-        // console.log("q2Start: ", this.state.q2Start);
 
         fetch(addr + "query2", {
             method: "post",
@@ -425,7 +414,6 @@ class Result extends Component {
                         .then(data => {
                             let node = new q2ItemNode(data.items[0], parent.state.q1Total + parent.state.q2Start + i + 1);
                             wholeItems.push(node);
-                            // console.log(node.title);
 
                             if (wholeItems.length === q2IDs.length) {
                                 wholeItems.sort((a, b) => (a.sequence > b.sequence) ? 1 : -1);
@@ -454,7 +442,6 @@ class Result extends Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        //console.log("didupdate", this.state.q2Finish);
         if (!this.state.q1Finish || !this.state.q2Finish) {
             if (!prevState.loading) {
                 this.setState({loading: true})
@@ -469,10 +456,6 @@ class Result extends Component {
     }
 
     render() {
-        //console.log(this.state.q1Total);
-        //console.log(this.state.q2Total);
-        //console.log(this.state.q1Finish, this.state.q2Finish);
-        //console.log("total: ", this.state.q1Total + this.state.q2Total);
         if (this.state.ifError === false && this.state.q1Total + this.state.q2Total === 0) {
             this.setState({
                 ifError: true,
