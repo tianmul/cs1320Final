@@ -253,7 +253,7 @@ class Result extends Component {
                     let jsonData2 = {queryStr: query.q2, start: parent.state.q2Start, rows: q2Rows};
                     let q2IDs = [];
 
-                    fetch(addr + "/query2", {
+                    fetch(addr + "query2", {
                         method: "post",
                         headers: {
                             'Content-Type': 'application/json'
@@ -300,7 +300,7 @@ class Result extends Component {
 
                             for (let i = 0; i < q2IDs.length; i++) {
                                 let jsonDataDetail = {queryStr: "hd_nr=" + q2IDs[i]};
-                                fetch(addr + "/query2Detail", {
+                                fetch(addr + "query2Detail", {
                                     method: "post",
                                     headers: {
                                         'Content-Type': 'application/json'
@@ -355,7 +355,7 @@ class Result extends Component {
 
         let parent = this;
 
-        fetch(addr + "/query1", {
+        fetch(addr + "query1", {
             method: "post",
             headers: {
                 'Content-Type': 'application/json'
@@ -393,7 +393,7 @@ class Result extends Component {
         // console.log("Enter q2Fetch");
         // console.log("q2Start: ", this.state.q2Start);
 
-        fetch(addr + "/query2", {
+        fetch(addr + "query2", {
             method: "post",
             headers: {
                 'Content-Type': 'application/json'
@@ -415,7 +415,7 @@ class Result extends Component {
 
                 for (let i = 0; i < q2IDs.length; i++) {
                     let jsonDataDetail = {queryStr: "hd_nr=" + q2IDs[i]};
-                    fetch(addr + "/query2Detail", {
+                    fetch(addr + "query2Detail", {
                         method: "post",
                         headers: {
                             'Content-Type': 'application/json'
