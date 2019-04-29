@@ -152,6 +152,8 @@ class Result extends Component {
             q1Total: -1,
             q2Start: 0,
             q2Total: -1,
+            q1Down: false,
+            q2Down: false,
             numOnePage: 10,
             numPages: 0,
             ifError: false,
@@ -284,7 +286,10 @@ class Result extends Component {
                             .catch(err => {
                                 console.log("q2Detail fetch error: ", err);
                                 parent.setState({
-                                    q2Finish: true
+                                    q2Finish: true,
+                                    q2Down: true,
+                                    q2Total: 0,
+                                    numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
                                 });
                             });
                     }
@@ -292,8 +297,10 @@ class Result extends Component {
                 .catch(err => {
                     console.log("q2Fetch catch err: ", err);
                     this.setState({
-                        ifError: true,
-                        errorPrompt: "The source website has blocked our access, please contact the adminstrator."
+                        q2Finish: true,
+                        q2Down: true,
+                        q2Total: 0,
+                        numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
                     });
                     return;
                 });
@@ -371,7 +378,8 @@ class Result extends Component {
                 console.log("q1Fetch cartch err: ", err);
                 parent.setState({
                     q1Total: 0,
-                    q1Finish: true
+                    q1Finish: true,
+                    q1Down: true
                 }, () => {
                     parent.mixFetchQ2(query, wholeItems);
                 });             
@@ -406,9 +414,12 @@ class Result extends Component {
                 });
             })
             .catch(err => {
-                console.log(err);
+                console.log("q1Fetch error: ", err);
                 parent.setState({
                     q1Finish: true,
+                    q1Down: true,
+                    q1Total: 0,
+                    numPages: Math.ceil(parent.state.q2Total / parent.state.numOnePage)
                 });
 
             });
@@ -466,11 +477,23 @@ class Result extends Component {
                         .catch(err => {
                             console.log("q2Detail fetch error: ", err);
                             parent.setState({
-                                q2Finish: true
+                                q2Finish: true,
+                                q2Down: true,
+                                q2Total: 0,
+                                numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
                             });
                         });
                 }
-            });
+            })
+            .catch(err => {
+                console.log("q2Fetch error: ", err);
+                parent.setState({
+                    q2Finish: true,
+                    q2Down: true,
+                    q2Total: 0,
+                    numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
+                });
+            })
     }
 
     componentDidMount() {
@@ -503,45 +526,50 @@ class Result extends Component {
             });
         }
 
-            return (
-                <div className="Items">
-                    <div className="main-page">
-                        {this.state.ifError ? <div className="noResults">
-                            <b>{this.state.errorPrompt}</b>
-                        </div> : this.state.loading ? <div className="outer">
-                                <div className="load">
-                                    <ReactLoading type={"bars"} color="black"/>
-                                </div>
-                            </div> :
-                            <div className="itemList">
-                                {this.state.items.map((node, index) => <Item history={this.props.history} key={index}
-                                                                             transcription={node.transcription}
-                                                                             date={node.date} language={node.language}
-                                                                             findSpot={node.findSpot} photo={node.fotos}
-                                                                             sequence={node.sequence} title={node.title}
-                                                                             data={node.data}/>)}
-                            </div>
-
-                        }
-                        <ReactPaginate
-                            previousLabel={'previous'}
-                            nextLabel={'next'}
-                            breakLabel={'...'}
-                            breakClassName={'break-me'}
-                            pageCount={this.state.numPages}
-                            marginPagesDisplayed={3}
-                            pageRangeDisplayed={3}
-                            onPageChange={this.handlePageClick}
-                            containerClassName={'pagination'}
-                            subContainerClassName={'pages pagination'}
-                            activeClassName={'active'}
-                        />
-                    </div>
-                </div>
-            );
+        if (this.state.q1Down === true && this.state.q2Down === true) {
+            this.setState({
+                ifError: true,
+                errorPrompt: "The source website has blocked our access, please contact the adminstrator."
+            });
         }
 
+        return (
+            <div className="Items">
+                <div className="main-page">
+                    {this.state.ifError ? <div className="noResults">
+                        <b>{this.state.errorPrompt}</b>
+                    </div> : this.state.loading ? <div className="outer">
+                            <div className="load">
+                                <ReactLoading type={"bars"} color="black"/>
+                            </div>
+                        </div> :
+                        <div className="itemList">
+                            {this.state.items.map((node, index) => <Item history={this.props.history} key={index}
+                                                                         transcription={node.transcription}
+                                                                         date={node.date} language={node.language}
+                                                                         findSpot={node.findSpot} photo={node.fotos}
+                                                                         sequence={node.sequence} title={node.title}
+                                                                         data={node.data}/>)}
+                        </div>
 
+                    }
+                    <ReactPaginate
+                        previousLabel={'previous'}
+                        nextLabel={'next'}
+                        breakLabel={'...'}
+                        breakClassName={'break-me'}
+                        pageCount={this.state.numPages}
+                        marginPagesDisplayed={3}
+                        pageRangeDisplayed={3}
+                        onPageChange={this.handlePageClick}
+                        containerClassName={'pagination'}
+                        subContainerClassName={'pages pagination'}
+                        activeClassName={'active'}
+                    />
+                </div>
+            </div>
+        );
+    }
 }
 
 export default Result;
