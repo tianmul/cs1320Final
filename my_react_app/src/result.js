@@ -6,7 +6,7 @@ import ReactLoading from 'react-loading';
 import { config } from './config.js';
 
 const addr=config.addr;
-console.log(addr);
+// console.log(addr);
 
 function q1ItemNode(data, num) {
     // console.log(data);
@@ -236,7 +236,7 @@ class Result extends Component {
                         q1Total: data.response.numFound,
                     });
                 }
-                console.log("q1Total: ", this.state.q1Total);
+                // console.log("q1Total: ", this.state.q1Total);
                 for (let i = 0; i < Math.min(parent.state.q1Total - parent.state.q1Start, parent.state.numOnePage); i++) {
                     let node = new q1ItemNode(data.response.docs[i], parent.state.q1Start + i + 1);
                     wholeItems.push(node);
@@ -277,9 +277,8 @@ class Result extends Component {
                                     numPages: Math.ceil((parent.state.q1Total + resultNum) / parent.state.numOnePage),
                                 });
                             }
-
                             
-                            console.log("q2Total: ", this.state.q2Total);
+                            // console.log("q2Total: ", this.state.q2Total);
 
                             if (parent.state.q2Total === 0 || q2Rows === 0) {
                                 parent.setState({
@@ -322,7 +321,7 @@ class Result extends Component {
                                         }
                                     })
                                     .catch(err => {
-                                        //console.log(err);
+                                        console.log(err);
                                         parent.setState({
                                             q2Finish: true
                                         });
@@ -343,7 +342,7 @@ class Result extends Component {
                 parent.setState({
                     q1Finish: true
                 });
-                //console.log(err);
+                console.log(err);
             });
     }
 
@@ -430,7 +429,6 @@ class Result extends Component {
 
                             if (wholeItems.length === q2IDs.length) {
                                 wholeItems.sort((a, b) => (a.sequence > b.sequence) ? 1 : -1);
-                                console.log("into q2 finish", this.state.q2Finish);
                                 parent.setState({
                                     items: wholeItems,
                                     q2Finish: true
