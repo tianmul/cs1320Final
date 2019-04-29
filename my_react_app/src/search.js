@@ -3,7 +3,7 @@ import './search.css';
 import { config } from './config.js';
 
 const addr=config.addr;
-console.log(addr);
+//console.log(addr);
 
 /*basic functions*/
 const capitalize = (s) => {
@@ -190,9 +190,9 @@ class Search extends Component {
 			<table>
    				<tbody style={{display: "table"}}>
 					<tr style={{height: "40px"}}>
-						<th><span>From:</span></th>
+						<th><span>From:&nbsp;&nbsp;</span></th>
 						<th><input style={{width: "100%"}}  id="from" name="from" onChange={this.handleChange}/></th>
-						<th><span>&nbsp;&nbsp;To:</span></th>
+						<th><span>&nbsp;&nbsp;To:&nbsp;&nbsp;</span></th>
 						<th><input style={{width: "100%"}}  id="to" name="to" onChange={this.handleChange}/></th>
 					</tr>
 					<tr style={{height: "40px"}}>
@@ -202,13 +202,9 @@ class Search extends Component {
 				</tbody>
 			</table>
                     <input className="button-4" type="submit" value="Search"/>
-
                 </form>
-
-
             </div>
-        )
-            ;
+        );
     }
 
     handleChange(event) {
@@ -266,21 +262,9 @@ class Search extends Component {
         }
 
         if (query === '') query = '*:*';
-        console.log(query)
+        //console.log(query)
 
-
-        /*Pass Query and Jump to Next Page, Next Page Do Following*/
-
-        /*let jsonData = { queryStr:query, start:"0", rows:"100" };
-        fetch("/query1", {
-            method: "post",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(jsonData),
-        }).then(response => response.json()).then(data => {console.log(data)});		*/
-
-        let query2 = '';
+	let query2 = '';
         //make checkbox fields EDH query
         for (let objname in project2Mapping) {
             if (this.state[objname].length !== 0) {
@@ -294,7 +278,7 @@ class Search extends Component {
                 }
             }
         }
-        /*&dat_jahr_a=-100&dat_jahr_e&atext1=su+b*/
+	    
         if (this.state.from !== '') {
             if (query2 === '') query2 = query2 + 'dat_jahr_a=' + String(from);
             else query2 = query2 + '&dat_jahr_a=' + String(from);
@@ -311,16 +295,12 @@ class Search extends Component {
         localStorage.setItem('query', JSON.stringify({q1: query, q2: query2}));
 
         this.props.history.push('./result');
-        //history.push('/result');
-
     };
 }
 
 class Filter extends Component {
-
     render() {
         return (
-
             <div className="FilterWarpper">
                 <span>{this.props.name}</span>
                 <div className="Filter">

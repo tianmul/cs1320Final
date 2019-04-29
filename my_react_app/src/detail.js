@@ -8,7 +8,6 @@ const proj2 = ["id", "fotos", "language", "height", "width", "depth", "not_befor
 const generateElement = (key, value) => {
     // Error checking
     if (value === undefined || value.length === 0 || (value.length === 1 && value[0] === "")) {
-        console.log(key);
         value = "NA";
     }
     if (value.includes("<") || value.includes(">")) {
@@ -44,13 +43,11 @@ function generateData(data) {
                 result.push(elementToPush);
             }
         } else {
-            console.log(currentKey);
             let toDisplay = data[currentKey][0];
             // const nested = generateData(toDisplay);
             // result.push(nested);
             for (let i = 1; i < data[currentKey].length; i++) {
                 toDisplay = toDisplay + ", " + data[currentKey][i];
-                console.log(toDisplay);
             }
             // const nested = generateData(data[currentKey]);
             // const elementToPush = generateElement(currentKey, nested);
@@ -59,7 +56,6 @@ function generateData(data) {
         }
         return result;
     }, []);
-    console.log(newData);
     return newData;
 }
 
@@ -133,7 +129,6 @@ const Side = props => {
 
     } else {
         if (props.data.fotos !== undefined) {
-            console.log(props.data.fotos);
             imgUrl = props.data.fotos;
         }
 
@@ -201,7 +196,6 @@ class Detail extends Component {
             this.setState({auth: false});
             return;
         }
-        console.log("detail page: ", data);
         if (whichProject(data)) {
             this.setState({
                 data: data,
