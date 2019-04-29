@@ -162,6 +162,7 @@ class Result extends Component {
         this.q1Fetch = this.q1Fetch.bind(this);
         this.q2Fetch = this.q2Fetch.bind(this);
         this.mixFetch = this.mixFetch.bind(this);
+        this.mixFetchQ2 = this.mixFetchQ2.bind(this);
     }
 
     handlePageClick = data => {
@@ -199,6 +200,101 @@ class Result extends Component {
         }
     };
 
+    mixFetchQ2() {
+        if (query.q2 !== '') {
+            let q2Rows = 0;
+            if (parent.state.numOnePage > parent.state.q1Total - parent.state.q1Start) {
+                q2Rows = parent.state.numOnePage - (parent.state.q1Total - parent.state.q1Start);
+            }
+            let jsonData2 = {queryStr: query.q2, start: parent.state.q2Start, rows: q2Rows};
+            let q2IDs = [];
+
+            fetch(addr + "query2", {
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData2),
+            })
+                .then(response => response.text())
+                .then(state => {
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(state, "text/html");
+
+                    if (parent.state.q2Total === -1) {
+                        let resultNum = 0;
+                        try {
+                            resultNum = parseInt((doc.getElementsByTagName("b")[1].innerHTML).split(" ")[2], 10);
+                        } catch (err) {
+                            resultNum = 0;
+                        }
+                        parent.setState({
+                            q2Total: resultNum,
+                            numPages: Math.ceil((parent.state.q1Total + resultNum) / parent.state.numOnePage),
+                        });
+                    }
+
+                    if (parent.state.q2Total === 0 || q2Rows === 0) {
+                        parent.setState({
+                            items: wholeItems,
+                            q2Finish: true
+
+                        });
+                        return;
+                    }
+
+                    let q2Results = doc.getElementsByClassName("linkLastUpdateDetail");
+                    let q2Num = Math.min(q2Results.length, q2Rows);
+
+                    for (let i = 0; i < q2Num; i++) {
+                        let id = doc.getElementsByClassName("linkLastUpdateDetail")[i].getAttribute("href").split("/")[3];
+                        q2IDs.push(id);
+                    }
+
+                    for (let i = 0; i < q2IDs.length; i++) {
+                        let jsonDataDetail = {queryStr: "hd_nr=" + q2IDs[i]};
+                        fetch(addr + "query2Detail", {
+                            method: "post",
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(jsonDataDetail),
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                let node = new q2ItemNode(data.items[0], parent.state.q1Total + parent.state.q2Start + i + 1);
+                                wholeItems.push(node);
+
+                                if (wholeItems.length === parent.state.q1Total - parent.state.q1Start + q2IDs.length) {
+                                    wholeItems.sort((a, b) => (a.sequence > b.sequence) ? 1 : -1);
+                                    parent.setState({
+                                        items: wholeItems,
+                                        q2Finish: true
+                                    });
+                                }
+                            })
+                            .catch(err => {
+                                console.log("q2Detail fetch error: ", err);
+                                parent.setState({
+                                    q2Finish: true
+                                });
+                            });
+                    }
+                })
+                .catch(err => {
+                    console.log("q2Fetch catch err: ", err);
+                });
+        } else {
+            console.log("q1Total: ", parent.state.q1Total);
+            parent.setState({
+                q2Finish: true,
+                items: wholeItems,
+                q2Total: 0,
+                numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
+            });
+        }
+    }
+
     mixFetch() {
         let query;
         if (localStorage.getItem('query') == null) {
@@ -230,19 +326,17 @@ class Result extends Component {
             body: JSON.stringify(jsonData),
         })
             .then(response => {
-		   console.log("enter into response");
+		        console.log("enter into response");
                 if (response.ok) {
                     console.log("response ok");
                     return response.json();
                 } else {
-			console.log("response not ok");
+			        console.log("response not ok");
                     throw new Error('Something went wrong');
                 } 
             })
             .then(data => {
-		//console.log(data);
-		console.log("Enter into data");
-	
+		        console.log("Enter into data");	
                 if (parent.state.q1Total === -1) {
                     parent.state.q1Total = data.response.numFound;
                     parent.setState({
@@ -257,106 +351,17 @@ class Result extends Component {
                 parent.setState({
                     q1Finish: true,
                 });
-                
-                if (query.q2 !== '') {
-                    let q2Rows = 0;
-                    if (parent.state.numOnePage > parent.state.q1Total - parent.state.q1Start) {
-                        q2Rows = parent.state.numOnePage - (parent.state.q1Total - parent.state.q1Start);
-                    }
-                    let jsonData2 = {queryStr: query.q2, start: parent.state.q2Start, rows: q2Rows};
-                    let q2IDs = [];
 
-                    fetch(addr + "query2", {
-                        method: "post",
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(jsonData2),
-                    })
-                        .then(response => response.text())
-                        .then(state => {
-                            let parser = new DOMParser();
-                            let doc = parser.parseFromString(state, "text/html");
-
-                            if (parent.state.q2Total === -1) {
-                                let resultNum = 0;
-                                try {
-                                    resultNum = parseInt((doc.getElementsByTagName("b")[1].innerHTML).split(" ")[2], 10);
-                                } catch (err) {
-                                    resultNum = 0;
-                                }
-                                parent.setState({
-                                    q2Total: resultNum,
-                                    numPages: Math.ceil((parent.state.q1Total + resultNum) / parent.state.numOnePage),
-                                });
-                            }
-
-                            if (parent.state.q2Total === 0 || q2Rows === 0) {
-                                parent.setState({
-                                    items: wholeItems,
-                                    q2Finish: true
-
-                                });
-                                return;
-                            }
-
-                            let q2Results = doc.getElementsByClassName("linkLastUpdateDetail");
-                            let q2Num = Math.min(q2Results.length, q2Rows);
-
-                            for (let i = 0; i < q2Num; i++) {
-                                let id = doc.getElementsByClassName("linkLastUpdateDetail")[i].getAttribute("href").split("/")[3];
-                                q2IDs.push(id);
-                            }
-
-                            for (let i = 0; i < q2IDs.length; i++) {
-                                let jsonDataDetail = {queryStr: "hd_nr=" + q2IDs[i]};
-                                fetch(addr + "query2Detail", {
-                                    method: "post",
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(jsonDataDetail),
-                                })
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        let node = new q2ItemNode(data.items[0], parent.state.q1Total + parent.state.q2Start + i + 1);
-                                        wholeItems.push(node);
-
-                                        if (wholeItems.length === parent.state.q1Total - parent.state.q1Start + q2IDs.length) {
-                                            wholeItems.sort((a, b) => (a.sequence > b.sequence) ? 1 : -1);
-                                            parent.setState({
-                                                items: wholeItems,
-                                                q2Finish: true
-                                            });
-                                        }
-                                    })
-                                    .catch(err => {
-                                        console.log("q2Detail fetch error: ", err);
-                                        parent.setState({
-                                            q2Finish: true
-                                        });
-
-                                    });
-                            }
-                        })
-			.catch(err => {
-				console.log("q2Fetch catch err: ", err);
-			});
-                } else {
-		    console.log("q1Total: ", parent.state.q1Total);
-                    parent.setState({
-                        q2Finish: true,
-                        items: wholeItems,
-                        q2Total: 0,
-                        numPages: Math.ceil(parent.state.q1Total / parent.state.numOnePage)
-                    });
-                }
+                parent.mixFetchQ2();
             })
             .catch(err => {
-                parent.setState({
-                    q1Finish: true
-                });
                 console.log("q1Fetch cartch err: ", err);
+                parent.setState({
+                    q1Total: 0,
+                    q1Finish: true
+                }, () => {
+                    parent.mixFetchQ2();
+                });             
             });
     }
 
@@ -446,7 +451,7 @@ class Result extends Component {
                             }
                         })
                         .catch(err => {
-                            console.log(err);
+                            console.log("q2Detail fetch error: ", err);
                             parent.setState({
                                 q2Finish: true
                             });
