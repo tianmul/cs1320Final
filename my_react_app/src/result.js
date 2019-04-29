@@ -527,6 +527,7 @@ class Result extends Component {
         }
 
         if (this.state.q1Down === true && this.state.q2Down === true) {
+            console.log("Both down");
             this.setState({
                 ifError: true,
                 errorPrompt: "The source website has blocked our access, please contact the adminstrator."
