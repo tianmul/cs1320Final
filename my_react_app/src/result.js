@@ -200,10 +200,13 @@ class Result extends Component {
         }
     };
 
-    mixFetchQ2() {
+    mixFetchQ2(query, wholeItems) {
         console.log("enter mixFetchQ2");
         console.log("q1finish: ", this.state.q1Finish);
-        console.log("q2finish: ", this.state.q2Finish)
+        console.log("q2finish: ", this.state.q2Finish);
+
+        let parent = this;
+
         if (query.q2 !== '') {
             let q2Rows = 0;
             if (parent.state.numOnePage > parent.state.q1Total - parent.state.q1Start) {
@@ -357,7 +360,7 @@ class Result extends Component {
                     q1Finish: true,
                 });
 
-                parent.mixFetchQ2();
+                parent.mixFetchQ2(query, wholeItems);
             })
             .catch(err => {
                 console.log("q1Fetch cartch err: ", err);
@@ -365,7 +368,7 @@ class Result extends Component {
                     q1Total: 0,
                     q1Finish: true
                 }, () => {
-                    parent.mixFetchQ2();
+                    parent.mixFetchQ2(query, wholeItems);
                 });             
             });
     }
