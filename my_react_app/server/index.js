@@ -23,7 +23,10 @@ for( i = 0; i < project1_facets_lists.length; i++){
 		}
 		project1[facet] = facetList;
 		console.log(facet + " Get!");
-	}).catch(function(error){ console.log(error);});
+	}).catch(function(error){
+		console.log("enter faceList Error");
+		console.log(error);
+	});
 }
 
 function setP2(){
@@ -50,11 +53,16 @@ app.post('/query1', (req, res) => {
 	let urlPostfix = '&indent=on&wt=json&q=';
 	console.log(website + showWhich + urlPostfix + req.body.queryStr);
 
-	axios.get(website + showWhich + urlPostfix + req.body.queryStr).then((response) => {		
-		res.setHeader('Content-Type', 'application/json');
-		res.end( JSON.stringify(response.data) );	
-			
-		console.log("query 1 result returned!");
+        axios.get(website + showWhich + urlPostfix + req.body.queryStr).then((response) => {  
+		res.setHeader('Content-Type', 'application/json'); 
+		res.end( JSON.stringify(response.data) );  
+	   	console.log("query 1 result returned!"); 
+	}).catch(function(err){
+		res.setHeader('Content-Type', 'application/json'); 
+		console.log("catch error");
+		console.log("error:", err);
+		console.log(typeof err);
+	 	res.end(JSON.stringify({error:"err"}));   
 	});
 });
 

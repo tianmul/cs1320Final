@@ -215,7 +215,6 @@ class Result extends Component {
         let wholeItems = [];
 
         let parent = this;
-        console.log("here");
 
         fetch(addr + "query1", {
             method: "post",
@@ -225,14 +224,19 @@ class Result extends Component {
             body: JSON.stringify(jsonData),
         })
             .then(response => {
+		   console.log("enter into response");
                 if (response.ok) {
                     console.log("response ok");
                     return response.json();
                 } else {
+			console.log("response not ok");
                     throw new Error('Something went wrong');
                 } 
             })
             .then(data => {
+		//console.log(data);
+		console.log("Enter into data");
+	
                 if (parent.state.q1Total === -1) {
                     parent.state.q1Total = data.response.numFound;
                     parent.setState({
@@ -321,15 +325,19 @@ class Result extends Component {
                                         }
                                     })
                                     .catch(err => {
-                                        console.log(err);
+                                        console.log("q2Detail fetch error: ", err);
                                         parent.setState({
                                             q2Finish: true
                                         });
 
                                     });
                             }
-                        });
+                        })
+			.catch(err => {
+				console.log("q2Fetch catch err: ", err);
+			});
                 } else {
+		    console.log("q1Total: ", parent.state.q1Total);
                     parent.setState({
                         q2Finish: true,
                         items: wholeItems,
@@ -342,7 +350,7 @@ class Result extends Component {
                 parent.setState({
                     q1Finish: true
                 });
-                console.log(err);
+                console.log("q1Fetch cartch err: ", err);
             });
     }
 

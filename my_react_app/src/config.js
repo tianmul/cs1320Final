@@ -1,5 +1,5 @@
 // Configuration file
 
 export const config = {
-    addr: "http://localhost:3001/"
+    addr: "http://52.14.35.60:3001/"
 };

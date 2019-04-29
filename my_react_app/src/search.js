@@ -293,6 +293,7 @@ class Search extends Component {
         }
 
         localStorage.setItem('query', JSON.stringify({q1: query, q2: query2}));
+	console.log("query: ", query);
 
         this.props.history.push('./result');
     };
