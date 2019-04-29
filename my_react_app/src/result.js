@@ -223,7 +223,13 @@ class Result extends Component {
             },
             body: JSON.stringify(jsonData),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Something went wrong');
+                } 
+            })
             .then(data => {
                 if (parent.state.q1Total === -1) {
                     parent.state.q1Total = data.response.numFound;
