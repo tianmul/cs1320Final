@@ -14,8 +14,9 @@ Since you may need to use sudo and change some file manually, we cannot provide 
 3. Change the config file:
 Change address in config file (cs1320Final/my_react_app/src/config.js) to your server address (the public ip) with port 3001. You can use multiple ip address to reduce the block possibility if you control multiple servers. 
 
-If you use multiple servers option, choose one as your frontend website. For the rest servers, instead of going to step 4 and 5, just run 
-- nohup node ./server/index.js > serverLog &
+If you use multiple servers option, choose one as your frontend website. For the rest servers, instead of going through step 4 to 7, just run the following line and exit the ssh
+    - nohup node ./server/index.js > serverLog &
+    - exit
 This will only start the backend side service instead of building both frontend and backend.
 
 If you want to use a different port, go to cs1320Final/my_react_app/server/index.js and change the port written in the last line.
@@ -30,8 +31,10 @@ Before go to step 5, try to run "serve -s build" first and interrupt it (ctrl+c)
     - nohup node ./server/index.js > serverLog &
     - nohup serve -s build > clientLog &
 
-6. Exit ssh correctly
+6. Exit ssh
     - exit
-    
 Never Close The Terminal Directly Before You Exit The SSH To Server!
 If you do this, the server will end the process and the website will down.
+
+7. Visit website
+Normally, your website link should be the public server ip address (or the domain name) with port 5000. 
