@@ -12,13 +12,13 @@ const getAddr = () => {
 
 /*basic functions*/
 const capitalize = (s) => {
-    if (typeof s !== 'string') return ''
+    if (typeof s !== 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1)
-}
+};
 const lowitalize = (s) => {
     if (typeof s !== 'string') return ''
     return s.charAt(0).toLowerCase() + s.slice(1)
-}
+};
 
 
 /*select -> Name Mapping Table*/
@@ -188,7 +188,7 @@ class Search extends Component {
                 <form style={{margin: "40px"}} action="./result" onSubmit={this.handleSubmit}>
                     <div className="container">
                         <Filter name="Location" data={this.state.locations} parent={this} cat="locations"/>
-                        <Filter name="Type of Inscription" data={this.state.types} parent={this} cat="types"/>
+                        <Filter name="Type of Inscriptions" data={this.state.types} parent={this} cat="types"/>
                         <Filter name="Physical Type" data={this.state.physicalTypes} parent={this} cat="physicalTypes"/>
                         <Filter name="Language" data={this.state.languages} parent={this} cat="languages"/>
                         <Filter name="Religion" data={this.state.religions} parent={this} cat="religions"/>

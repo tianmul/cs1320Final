@@ -82,6 +82,15 @@ h3 {
     overflow-wrap: break-word;
 }
 
+.row_em {
+    font-size: larger;
+    border-bottom: #333333 solid 2px;
+    display: flex;
+    margin: 10px;
+    overflow-wrap: break-word;
+}
+
+
 .field_des {
     padding: 10px;
     margin-right: 10%;

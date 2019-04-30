@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
 import './detail.css';
 import NAImage from "./notAvaliable.jpg"
+import Redirect from "./redirect.png"
+
+const capitalize = (s) => {
+    if (typeof s !== 'string') return '';
+    return s.charAt(0).toUpperCase() + s.slice(1)
+};
 
 const proj2 = ["id", "fotos", "language", "height", "width", "depth", "not_before", "not_after"
-    , "findspot_ancient", "findspot_modern", "transcription", "material", "type_of_monument", "trismegistos_uri", "diplomatic_text", "country", "social_economic_legal_history"];
+    , "findspot_ancient", "findspot_modern", "transcription", "material", "type_of_monument", "trismegistos_uri", "diplomatic_text", "country", "social_economic_legal_history", "work_status", "uri"];
 
 const generateElement = (key, value) => {
     // Error checking
@@ -17,6 +23,18 @@ const generateElement = (key, value) => {
             value = value.replace("</span>", "");
         }
         value = stripHTML(value);
+    }
+
+    key = key.replace(/_/gm, " ");
+    key = capitalize(key);
+
+    if (key === "Original Site:") {
+        let link = <a href={value}> <img alt="redirect symbol" src={Redirect}/> Click to Redirect</a>;
+        return (
+            <div key={key} className="row_em">
+                <div className="field_des">{key}</div>
+                <div className="field_con">{link}</div>
+            </div>)
     }
 
     return (
@@ -76,7 +94,7 @@ const Common = props => {
         } else {
             predate = props.data.notBefore + "CE";
         }
-    } 
+    }
     if (props.data.notAfter !== undefined) {
         if (props.data.notAfter < 0) {
             predate = predate + "-" + (-props.data.notAfter) + "BCE";
@@ -92,8 +110,10 @@ const Common = props => {
     const material = generateElement("Material:", props.material);
     const placeFound = generateElement("Place Found:", props.placeFound);
     const physicalType = generateElement("Physical Type:", props.physicalType);
+    const oriUrl = generateElement("Original Site:", props.site);
 
     return (<div className="right">
+        {oriUrl}
         {language}
         {dimensions}
         {date}
@@ -192,7 +212,7 @@ class Detail extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         let data = JSON.parse(localStorage.getItem('detailData'));
-        if(data === null || data.length === 0){
+        if (data === null || data.length === 0) {
             this.setState({auth: false});
             return;
         }
@@ -211,7 +231,8 @@ class Detail extends Component {
                 translation: data.translation,
                 material: data.material,
                 physicalType: data.physical_type,
-                diplomatic: data.diplomatic
+                diplomatic: data.diplomatic,
+                site: "https://library.brown.edu/iip_development/viewinscr/" + data.inscription_id + "/"
             });
         } else {
             this.setState({
@@ -228,15 +249,16 @@ class Detail extends Component {
                 translation: data.translation,
                 material: data.material,
                 physicalType: data.type_of_monument,
-                diplomatic: data.diplomatic_text
+                diplomatic: data.diplomatic_text,
+                site: data.uri
             });
 
         }
     }
 
     render() {
-        if(!this.state.auth){
-            return  <div className="Detail">
+        if (!this.state.auth) {
+            return <div className="Detail">
                 <div className="errMsg">Cannot reach page</div>
             </div>
         }
@@ -268,6 +290,7 @@ class Detail extends Component {
                         material={this.state.material}
                         physicalType={this.state.physicalType}
                         data={this.state.data}
+                        site={this.state.site}
                     />
 
                 </div>
