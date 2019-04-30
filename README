@@ -1,30 +1,37 @@
-Since you need to use sudo and change some file manually, I cannot provide a bash for you to have a quick setup. Just follow the instructions below:
+Since you may need to use sudo and change some file manually, we cannot provide a bash for you to have a quick setup. Just follow the instructions below (which is based on ubuntu server):
 
 1. Install nodejs:
-	- sudo apt install curl
-	- curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
-	- sudo apt install nodejs  
-	- sudo npm install -g serve
+    - sudo apt install curl
+    - curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+    - sudo apt install nodejs  
+    - sudo npm install -g serve
 
 2. Setup the website code and package
-	- git clone https://github.com/tianmul/cs1320Final.git
-	- cd cs1320Final/my_react_app/
-	- npm install
+    - git clone https://github.com/tianmul/cs1320Final.git
+    - cd cs1320Final/my_react_app/
+    - npm install
 
 3. Change the config file:
-   Change address in config file (cs1320Final/my_react_app/src/config.js) to your server address (the public ip) with port 3001.
-   If you want to use a different port, go to cs1320Final/my_react_app/server/index.js and change the port written in the last line.
+Change address in config file (cs1320Final/my_react_app/src/config.js) to your server address (the public ip) with port 3001. You can use multiple ip address to reduce the block possibility if you control multiple servers. 
+
+If you use multiple servers option, choose one as your frontend website. For the rest servers, instead of going to step 4 and 5, just run 
+- nohup node ./server/index.js > serverLog &
+This will only start the backend side service instead of building both frontend and backend.
+
+If you want to use a different port, go to cs1320Final/my_react_app/server/index.js and change the port written in the last line.
+
 
 4. Build website:
-	- npm run build
-	
-Before go to step 4, try to run "serve -s build" first to see which port your website is assigned (normally, it should be 5000).
+    - npm run build
+    
+Before go to step 5, try to run "serve -s build" first and interrupt it (ctrl+c) to see which port your website will be assigned. (Normally, it should be port 5000).
 
 5. Make website online:
-	- nohup node ./server/index.js > serverLog &
-	- nohup serve -s build > clientLog &
-	
-6. Use exit to close ssh connection!!!!! Force quit will shut the website down.
-	- exit
+    - nohup node ./server/index.js > serverLog &
+    - nohup serve -s build > clientLog &
 
-
+6. Exit ssh correctly
+    - exit
+    
+Never Close The Terminal Directly Before You Exit The SSH To Server!
+If you do this, the server will end the process and the website will down.
