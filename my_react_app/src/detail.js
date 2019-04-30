@@ -7,7 +7,7 @@ const capitalize = (s) => {
     if (typeof s !== 'string') return '';
     return s.charAt(0).toUpperCase() + s.slice(1)
 };
-
+const proj1 = ["place_found", "material", "physical_type", "diplomatic", "language_display", "dimensions", "_version_", "display_status", "notBefore", "notAfter", "translation", "transcription", "placeMenu", "text", "metadata", "dispaly_status", "language", "bibl", "biblDiplomatic", "biblTranscription", "biblTranslation"];
 const proj2 = ["id", "fotos", "language", "height", "width", "depth", "not_before", "not_after"
     , "findspot_ancient", "findspot_modern", "transcription", "material", "type_of_monument", "trismegistos_uri", "diplomatic_text", "country", "social_economic_legal_history", "work_status", "uri"];
 
@@ -29,7 +29,7 @@ const generateElement = (key, value) => {
     key = capitalize(key);
 
     if (key === "Original Site:") {
-        let link = <a href={value}> <img alt="redirect symbol" src={Redirect}/> Click to Redirect</a>;
+        let link = <a href={value} target="_blank"> <img alt="redirect symbol" src={Redirect}/> Click to Redirect</a>;
         return (
             <div key={key} className="row_em">
                 <div className="field_des">{key}</div>
@@ -37,12 +37,29 @@ const generateElement = (key, value) => {
             </div>)
     }
 
-    return (
-        <div key={key} className="row">
-            <div className="field_des">{key}</div>
-            <div className="field_con">{value}</div>
-        </div>
-    );
+    let valueStr = "";
+    if (Array.isArray(value) && value.length > 1) {
+        for (let i = 0; i < value.length - 1; i++) {
+            valueStr = valueStr + value[i] + ", ";
+        }
+        valueStr = valueStr + value[value.length - 1];
+        return (
+            <div key={key} className="row">
+                <div className="field_des">{key}</div>
+                <div className="field_con">{valueStr}</div>
+            </div>
+        );
+
+
+    } else {
+
+        return (
+            <div key={key} className="row">
+                <div className="field_des">{key}</div>
+                <div className="field_con">{value}</div>
+            </div>
+        );
+    }
 };
 
 // Remove HTML tags
@@ -51,27 +68,29 @@ function stripHTML(text) {
 }
 
 function generateData(data) {
-    if (whichProject(data)) {
-        return generateElement("Description:", data["description"]);
-    }
     const newData = Object.keys(data).reduce((result, currentKey) => {
+        let valueStr = "";
+        let elementToPush = "";
         if ((typeof data[currentKey] === 'string' || data[currentKey] instanceof String)) {
-            const elementToPush = generateElement(currentKey, data[currentKey]);
-            if (!proj2.includes((currentKey))) {
-                result.push(elementToPush);
-            }
+            elementToPush = generateElement(currentKey, data[currentKey]);
         } else {
-            let toDisplay = data[currentKey][0];
-            // const nested = generateData(toDisplay);
-            // result.push(nested);
+            valueStr = data[currentKey][0];
+
             for (let i = 1; i < data[currentKey].length; i++) {
-                toDisplay = toDisplay + ", " + data[currentKey][i];
+
+                valueStr = valueStr + ", " + data[currentKey][i];
             }
-            // const nested = generateData(data[currentKey]);
-            // const elementToPush = generateElement(currentKey, nested);
-            //
-            // result.push(elementToPush);
+            elementToPush = generateElement(currentKey, valueStr);
         }
+
+        if (whichProject(data) === 0) {
+            result.push(elementToPush);
+        } else if (whichProject(data) === 1 && !proj1.includes((currentKey))) {
+            result.push(elementToPush);
+        } else if (whichProject(data) === 2 && !proj2.includes((currentKey))) {
+            result.push(elementToPush);
+        }
+
         return result;
     }, []);
     return newData;
@@ -80,7 +99,13 @@ function generateData(data) {
 // JSON from which project, return T for iip, F for HD
 function whichProject(data) {
     let keys = Object.keys(data);
-    return keys.includes("inscription_id");
+    let projNum = 0;
+    if (keys.includes("inscription_id")) {
+        projNum = 1;
+    } else if (keys.includes("id") && data.id.startsWith("HD")) {
+        projNum = 2;
+    }
+    return projNum;
 }
 
 const Common = props => {
@@ -130,7 +155,7 @@ const Side = props => {
     const translation = generateElement("Translation:", props.translation);
     let imgUrl = NAImage;
 
-    if (whichProject(props.data) || (!whichProject(props.data) && props.data.fotos === undefined)) {
+    if (whichProject(props.data) === 1 || (whichProject(props.data) === 2 && props.data.fotos === undefined)) {
         imgUrl = props.url;
         if (imgUrl === undefined) {
             imgUrl = NAImage;
@@ -172,7 +197,7 @@ const Side = props => {
 };
 
 const Title = props => {
-    if (whichProject(props.data)) {
+    if (whichProject(props.data) === 1) {
         return <h3>{props.id} - {props.placeFound}. {props.physicalType}</h3>
     } else {
         if (props.data.placeFound !== undefined) {
@@ -212,11 +237,12 @@ class Detail extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
         let data = JSON.parse(localStorage.getItem('detailData'));
+        // console.log(data);
         if (data === null || data.length === 0) {
             this.setState({auth: false});
             return;
         }
-        if (whichProject(data)) {
+        if (whichProject(data) === 1) {
             this.setState({
                 data: data,
                 url: "https://raw.githubusercontent.com/Brown-University-Library/iip-images/master/" + data.inscription_id.toLowerCase() + ".jpg",
@@ -234,7 +260,7 @@ class Detail extends Component {
                 diplomatic: data.diplomatic,
                 site: "https://library.brown.edu/iip_development/viewinscr/" + data.inscription_id + "/"
             });
-        } else {
+        } else if (whichProject(data) === 2) {
             this.setState({
                 data: data,
                 url: data.fotos,
