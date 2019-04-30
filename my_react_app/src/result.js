@@ -150,7 +150,6 @@ class Result extends Component {
             loading: true,
             q1Finish: true,
             q2Finish: true,
-            q2Array: [],
             items: [],
             q1Start: 0,
             q1Total: -1,
@@ -190,7 +189,6 @@ class Result extends Component {
                 this.setState({
                     q1Finish: false,
                     q2Finish: false,
-                    q2Array: []
                 });
                 this.mixFetch()
             });
@@ -199,7 +197,6 @@ class Result extends Component {
                 this.setState({
                     q1Finish: true,
                     q2Finish: false,
-                    q2Array: []
                 });
                 this.q2Fetch()
             });

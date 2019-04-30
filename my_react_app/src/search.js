@@ -5,7 +5,6 @@ import { config } from './config.js';
 const addr=config.addr;
 
 const getAddr = () => {
-	console.log(addr[Math.floor(Math.random() * addr.length)]);
 	return addr[Math.floor(Math.random() * addr.length)]; 
 };
 //console.log(addr);
@@ -85,7 +84,7 @@ class Search extends Component {
     fetchData() {
         /*Fetch option list from IIP*/
 	let server = getAddr();
-	console.log("fetching 1 from" + server);
+	// console.log("fetching 1 from" + server);
         fetch(server + 'search1').then(response => response.json()).then(data => {
              this.setState({
                 locations: this.uniq(this.state.locations.concat(data.city)),
@@ -99,7 +98,7 @@ class Search extends Component {
 
         /*Fetch option list and mapping table from EDH*/
 	server = getAddr();
-	console.log("fetching 2 from" + server);
+	// console.log("fetching 2 from" + server);
         fetch(server +  'search2').then(response => response.text()).then(state => {
             let parser = new DOMParser();
             let doc = parser.parseFromString(state, "text/html");
@@ -304,7 +303,7 @@ class Search extends Component {
         }
 
         localStorage.setItem('query', JSON.stringify({q1: query, q2: query2}));
-	console.log("query: ", query);
+	// console.log("query: ", query);
 
         this.props.history.push('./result');
     };
