@@ -9,20 +9,24 @@ const capitalize = (s) => {
 };
 const proj1 = ["place_found", "material", "physical_type", "diplomatic", "language_display", "dimensions", "_version_", "display_status", "notBefore", "notAfter", "translation", "transcription", "placeMenu", "text", "metadata", "dispaly_status", "language", "bibl", "biblDiplomatic", "biblTranscription", "biblTranslation"];
 const proj2 = ["id", "fotos", "language", "height", "width", "depth", "not_before", "not_after"
-    , "findspot_ancient", "findspot_modern", "transcription", "material", "type_of_monument", "trismegistos_uri", "diplomatic_text", "country", "social_economic_legal_history", "work_status", "uri"];
+    , "findspot_ancient", "findspot_modern", "transcription", "material", "type_of_monument", "trismegistos_uri", "diplomatic_text", "country", "social_economic_legal_history", "work_status", "uri", "people"];
 
 const generateElement = (key, value) => {
     // Error checking
-    if (value === undefined || value.length === 0 || (value.length === 1 && value[0] === "")) {
+    if (typeof(value) === "object" || value === undefined || value.length === 0 || (value.length === 1 && value[0] === "")) {
         value = "NA";
     }
-    if (value.includes("<") || value.includes(">")) {
-        // Remove span tags
-        if (value.includes("<span>")) {
-            value = value.replace("<span>", "");
-            value = value.replace("</span>", "");
+    
+    // console.log(value);
+    if(typeof (value) === "string") {
+        if (value.includes("<") || value.includes(">")) {
+            // Remove span tags
+            if (value.includes("<span>")) {
+                value = value.replace("<span>", "");
+                value = value.replace("</span>", "");
+            }
+            value = stripHTML(value);
         }
-        value = stripHTML(value);
     }
 
     key = key.replace(/_/gm, " ");
