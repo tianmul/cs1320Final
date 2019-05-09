@@ -98,7 +98,7 @@ class Item extends Component {
                 <thead>
                 <tr>
                     <th className="itemHead" colSpan="2"
-                        onClick={this.goDetail}>Number {this.props.sequence}: {this.props.title}</th>
+                        onClick={this.goDetail}><a>Number {this.props.sequence}: {this.props.title}</a></th>
                 </tr>
                 </thead>
                 <tbody>
